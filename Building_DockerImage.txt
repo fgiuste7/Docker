@@ -1,0 +1,15 @@
+# Building docker image:
+1. Started with Neurodocker tutorial Dockerfile taken from: miykael/nipype_tutorial
+	-Github repository: https://github.com/miykael/nipype_tutorial.git
+
+2. Added plot.ly, ipywidgets, nibabel to "Create conda environment" Section
+3. Removed Tutorial notebooks and data
+4. In directory containing Dockerfile run:
+		
+		docker build --tag rwb .
+
+5. To run Jupyter Notebook within Docker container:
+
+		docker run -it --rm -v /home/fgiuste/ehechtDogTest:/data -v /home/dgutman/devel/RandomiseWholeBrain:/notebooks:rw -p 8xxx:8888 rwb jupyter-notebook --notebook-dir=/notebooks
+
+6. The default entry directory is: /home/neuro
