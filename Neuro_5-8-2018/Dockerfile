@@ -109,8 +109,6 @@ RUN echo "Downloading Miniconda installer ..." \
 RUN conda create -y -q --name neuro python=3.6 \
                                     pytest \
                                     jupyter \
-                                    jupyterlab \
-                                    jupyter_contrib_nbextensions \
                                     traits \
                                     pandas \
                                     dask \
@@ -124,6 +122,11 @@ RUN conda create -y -q --name neuro python=3.6 \
                                     plotly \
                                     dash \
                                     nibabel \
+                                    scipy \
+                                    graphviz \
+                                    networkx \
+                                    dask \
+                                    h5py \
     && sync && conda clean -tipsy && sync \
     && /bin/bash -c "source activate neuro \
     && pip install -q --no-cache-dir https://github.com/nipy/nipype/tarball/master \
@@ -140,10 +143,11 @@ RUN bash -c "source activate neuro"
 
 # BASH: Allows Jupyter to run
 RUN mkdir -p ~/.jupyter \
-    && echo c.NotebookApp.ip = \"0.0.0.0\" > ~/.jupyter/jupyter_notebook_config.py \
-    && echo \
-    {\"NotebookApp\": {\"password\": \"sha1:317d49d226c9:09f54bfd5868c8897e261a281fa9b7fea8904c5d\"}} \
-    > ~/.jupyter/jupyter_notebook_config.json
+    && echo c.NotebookApp.ip = \"0.0.0.0\" > ~/.jupyter/jupyter_notebook_config.py
+
+RUN echo "{\"NotebookApp\": \
+    { \"password\": \"sha1:317d49d226c9:09f54bfd5868c8897e261a281fa9b7fea8904c5d\" } }\
+    " >> /home/neuro/.jupyter/jupyter_notebook_config.json
 
 USER root
 
@@ -170,7 +174,10 @@ USER neuro
 
 WORKDIR /home/neuro
 
-RUN alias ls='ls -lha --color=auto'
+RUN echo "alias ls='ls -lha --color=auto' " >> /home/neuro/.profile
+RUN echo "alias rm='rm -i' " >> /home/neuro/.profile
+
+RUN . /home/neuro/.profile
 
 # Run on start:
-#CMD ["RWB_FG_v9.py"]
+# CMD ["RWB_FG_v9.py"]

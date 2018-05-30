@@ -10,7 +10,7 @@
 
 5. To run Jupyter Notebook within Docker container:
 
-		docker run -it --rm -v /home/fgiuste/ehechtDogTest:/data -v /home/fgiuste/notebooks:/notebooks:rw -p 8123:8888 rwb 
+		docker run -it --rm -v /home/fgiuste/ehechtDogTest:/data -v /home/fgiuste/notebooks:/notebooks:rw -v /home/fgiuste/output:/output:rw -p 8123:8888 rwb 
 		jupyter-notebook --notebook-dir=/notebooks
 
 6. The default entry directory is: /home/neuro
