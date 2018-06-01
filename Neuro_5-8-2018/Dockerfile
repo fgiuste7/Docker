@@ -127,7 +127,7 @@ RUN conda create -y -q --name neuro python=3.6 \
                                     networkx \
                                     dask \
                                     h5py \
-                                    PyTables \
+                                    pytables \
     && sync && conda clean -tipsy && sync \
     && /bin/bash -c "source activate neuro \
     && pip install -q --no-cache-dir https://github.com/nipy/nipype/tarball/master \
