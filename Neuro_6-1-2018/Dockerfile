@@ -118,6 +118,7 @@ RUN conda create -y -q --name neuro python=3.6 \
                                     networkx \
                                     dask \
                                     h5py \
+                                    PyTables \
     && sync && conda clean -tipsy && sync \
     && /bin/bash -c "source activate neuro \
     && pip install -q --no-cache-dir https://github.com/nipy/nipype/tarball/master \
@@ -144,6 +145,7 @@ RUN echo "{\"NotebookApp\": \
 USER root
 #----------------------------------------------------------
 # NeuroDebian Keys
+# http://neuro.debian.net/install_pkg.html?p=ants
 #----------------------------------------------------------
 wget -O- http://neuro.debian.net/lists/xenial.us-tn.full | sudo tee /etc/apt/sources.list.d/neurodebian.sources.list
 sudo apt-key adv --recv-keys --keyserver hkp://pool.sks-keyservers.net:80 0xA5D32F012649A5A9

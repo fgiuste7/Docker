@@ -15,7 +15,7 @@ Use Python Environment "neuro" (default) within container
 docker build --tag neuro2 .
 
 # To run image with drives mounted:
-docker run -it --rm -v /nvme/:/data/nvme:rw -v /sasraid/:/data/sasraid:rw -v /home/felipe/output:/output:rw -p 8124:8888 neuro
+docker run -it --rm -v /nvme/:/data/nvme:rw -v /sasraid/:/data/sasraid:rw -v /home/felipe/output:/output:rw -v /home/felipe/notebooks:/notebooks:rw -p 8124:8888 neuro
 
 # To run jupyter-notebook:
 jupyter-notebook --notebook-dir=/
