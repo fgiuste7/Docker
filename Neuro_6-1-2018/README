@@ -1,3 +1,6 @@
+# Difference from 5-8-2018:
+# Ubuntu:Xenial instead of neurodebian
+
 # This Dockerfile Contains:
 MCR and SPM12
 Miniconda
@@ -9,13 +12,10 @@ And others
 Use Python Environment "neuro" (default) within container
 
 # To build image from Dockerfile (Dockerfile must be in . and named "Dockerfile"):
-docker build --tag neuro .
+docker build --tag neuro2 .
 
 # To run image with drives mounted:
-docker run -it --rm -v /nvme:/data:rw -v /home/felipe/notebooks:/notebooks:rw -v /home/felipe/output:/output:rw -p 8124:8888 neuro
 docker run -it --rm -v /nvme/:/data/nvme:rw -v /sasraid/:/data/sasraid:rw -v /home/felipe/output:/output:rw -p 8124:8888 neuro
-
-docker run -it --rm -v /sasraid:/sasraid:rw -v /nvme:/nvme:rw -v /home/felipe:/home:rw -p 8124:8888 neuro
 
 # To run jupyter-notebook:
 jupyter-notebook --notebook-dir=/
