@@ -146,6 +146,9 @@ RUN bash -c "source activate neuro"
 RUN mkdir -p ~/.jupyter \
     && echo c.NotebookApp.ip = \"0.0.0.0\" > ~/.jupyter/jupyter_notebook_config.py
 
+#----------------------------------------------------------
+# Create Jupyter Notebook Password
+#----------------------------------------------------------
 RUN echo "{\"NotebookApp\": \
     { \"password\": \"sha1:317d49d226c9:09f54bfd5868c8897e261a281fa9b7fea8904c5d\" } }\
     " >> /home/neuro/.jupyter/jupyter_notebook_config.json
