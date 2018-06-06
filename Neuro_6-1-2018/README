@@ -1,15 +1,13 @@
-# Difference from 5-8-2018:
-# Ubuntu:Xenial instead of neurodebian
 
 # This Dockerfile Contains:
-MCR and SPM12
 Miniconda
 Nipype
 FSL
 dask, dash, plotly, matplotlib, scikit, jupyter, nibabel
 And others
 
-Use Python Environment "neuro" (default) within container
+# To Download prebuilt image:
+docker pull fgiuste/neuro
 
 # To build image from Dockerfile (Dockerfile must be in . and named "Dockerfile"):
 docker build --tag neuro .
