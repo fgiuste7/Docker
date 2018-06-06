@@ -178,4 +178,4 @@ USER neuro
 WORKDIR /home/neuro
 RUN /home/neuro/.profile
 
-# CMD ["/home/neuro/.profile"]
+# CMD ["/home/neuro/.profile &"]
