@@ -12,10 +12,14 @@ And others
 Use Python Environment "neuro" (default) within container
 
 # To build image from Dockerfile (Dockerfile must be in . and named "Dockerfile"):
-docker build --tag neuro2 .
+docker build --tag neuro .
 
-# To run image with drives mounted:
-docker run -it --rm -v /nvme/:/data/nvme:rw -v /sasraid/:/data/sasraid:rw -v /home/felipe/output:/output:rw -v /home/felipe/notebooks:/notebooks:rw -p 8124:8888 neuro
+# Frink:
+docker run -it --rm -v /nvme/:/data/nvme:rw -v /sasraid/:/data/sasraid:rw -v /home/felipe/output:/output:rw -v /home/felipe/notebooks:/home/neuro/notebooks# To run image with drives mounted:
+books:rw -p 8124:8888 neuro
+
+# Whorlwind:
+docker run -it --rm -v /home/fgiuste/ehechtDogTest:/data/ehechtDogTest:rw -v /home/fgiuste/Gliomics:/data/Gliomics:rw -v /home/fgiuste/FOX_FullResData:/data/FOX_FullResData:rw -v /home/fgiuste/output:/output:rw -v /home/fgiuste/notebooks:/home/neuro/notebooks:rw -p 8123:8888 rwb
 
 # To run jupyter-notebook:
 jupyter-notebook --notebook-dir=/
