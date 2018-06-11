@@ -14,8 +14,8 @@ FROM buildpack-deps:xenial
 # Install common dependencies and create default entrypoint
 #----------------------------------------------------------
 ENV LANG="en_US.UTF-8" \
-    LC_ALL="C.UTF-8" \
-    ND_ENTRYPOINT="/home/startup.sh"
+LC_ALL="C.UTF-8" \
+ND_ENTRYPOINT="/home/startup.sh"
 
 RUN apt-get update -qq && apt-get install -yq --no-install-recommends \
       apt-utils ca-certificates curl locales unzip sudo gnupg dirmngr \
