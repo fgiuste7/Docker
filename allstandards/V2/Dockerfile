@@ -1,14 +1,13 @@
-# 6/1/2018 (FG)
+# 7/2/2018 (FG)
 # 
 # To Build Docker Image:
 # cd ${Dockerfile_Directory}
 # docker build --tag ${image_name} .
 
 #----------------------------------------------------------
-# Install Xenial with additional libraries
+# Install allstandards
 #----------------------------------------------------------
-# https://github.com/docker-library/buildpack-deps/blob/d7da72aaf3bb93fecf5fcb7c6ff154cb0c55d1d1/xenial/Dockerfile
-FROM buildpack-deps:xenial
+FROM fgiuste/allstandards:V1 
 
 #----------------------------------------------------------
 # Install common dependencies and create default entrypoint
@@ -32,55 +31,6 @@ RUN apt-get update -qq && apt-get install -yq --no-install-recommends \
 
 ENTRYPOINT ["/home/startup.sh"]
 RUN sed -i '$isource /etc/fsl/fsl.sh' $ND_ENTRYPOINT
-
-
-#----------------------------------------------------------
-# NeuroDebian Keys
-# http://neuro.debian.net/install_pkg.html?p=ants
-# Neurodebian:
-# https://github.com/neurodebian/dockerfiles/blob/88af27888a5aee76924c3b6840fc47f9cd8f63cb/dockerfiles/xenial-non-free/Dockerfile
-#----------------------------------------------------------
-# RUN wget -O- http://neuro.debian.net/lists/xenial.us-tn.full | sudo tee /etc/apt/sources.list.d/neurodebian.sources.list
-# RUN apt-key adv --recv-keys --keyserver hkp://pool.sks-keyservers.net:80 0xA5D32F012649A5A9
-# https://bugs.debian.org/830696 (apt uses gpgv by default in newer releases, rather than gpg)
-
-RUN set -x \
-    && export GNUPGHOME="$(mktemp -d)" \
-    && gpg --keyserver ha.pool.sks-keyservers.net --recv-keys DD95CC430502E37EF840ACEEA5D32F012649A5A9 \
-    && gpg --export DD95CC430502E37EF840ACEEA5D32F012649A5A9 > /etc/apt/trusted.gpg.d/neurodebian.gpg \
-    && rm -rf "$GNUPGHOME" \
-    && apt-key list | grep neurodebian
-
-RUN { \
-    echo 'deb http://neuro.debian.net/debian xenial main'; \
-    echo 'deb http://neuro.debian.net/debian data main'; \
-    echo '#deb-src http://neuro.debian.net/debian-devel xenial main'; \
-} > /etc/apt/sources.list.d/neurodebian.sources.list
-
-RUN sed -i -e 's,main *$,main contrib non-free,g' /etc/apt/sources.list.d/neurodebian.sources.list; grep -q 'deb .* multiverse$' /etc/apt/sources.list || sed -i -e 's,universe *$,universe multiverse,g' /etc/apt/sources.list
-
-#----------------------------------------------------------
-# NeuroDebian Packages
-#----------------------------------------------------------
-RUN apt-get update -qq \
-    && apt-get install -y -q --no-install-recommends convert3d \
-                                                     ants \
-                                                     fsl \
-                                                     fsl-atlases \
-                                                     graphviz \
-                                                     tree \
-                                                     git-annex-standalone \
-                                                     vim \
-                                                     emacs-nox \
-                                                     nano \
-                                                     less \
-                                                     ncdu \
-                                                     tig \
-                                                     git-annex-remote-rclone \
-                                                     graphviz \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
 
 #----------------------------------------------
 # Create new user: neuro
@@ -115,7 +65,6 @@ RUN conda install -y pytest \
                      jupyter \
                      traits \
                      pandas \
-                     dask \
                      matplotlib \
                      scikit-learn \
                      scikit-image \
@@ -145,6 +94,10 @@ RUN conda install -y pytest \
                                   datalad[full] \
                                   nipy \
                                   duecredit \
+                                  itkwidgets \
+                                  itk-io \
+                                  pysurfer \
+                                  mayavi \
     && sync
 
 
@@ -185,5 +138,3 @@ RUN bash -c "rm -rf /opt/conda/pkgs/*"
 USER neuro
 WORKDIR /home/neuro
 RUN /home/neuro/.profile
-
-# CMD ["/home/neuro/.profile &"]

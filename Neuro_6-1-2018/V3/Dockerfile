@@ -78,6 +78,7 @@ RUN apt-get update -qq \
                                                      tig \
                                                      git-annex-remote-rclone \
                                                      graphviz \
+                                                     screen \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -138,6 +139,7 @@ RUN conda install -y pytest \
                      h5py \
                      pytables \
                      zarr \
+                     itk \
     && sync && conda clean -tipsy && sync \
     && pip install --no-cache-dir https://github.com/nipy/nipype/tarball/master \
                                   https://github.com/INCF/pybids/tarball/master \
@@ -145,6 +147,7 @@ RUN conda install -y pytest \
                                   datalad[full] \
                                   nipy \
                                   duecredit \
+                                  itkwidgets \
     && sync
 
 
@@ -156,6 +159,8 @@ USER root
 # BASH: Allows Jupyter to run:
 RUN mkdir -p /home/neuro/.jupyter \
     && echo c.NotebookApp.ip = \"0.0.0.0\" > /home/neuro/.jupyter/jupyter_notebook_config.py
+
+RUN echo c.NotebookApp.iopub_data_rate_limit = 1e12 >> /home/neuro/.jupyter/jupyter_notebook_config.py 
 
 # BASH: Set notebook password:
 RUN echo "{\"NotebookApp\": \
