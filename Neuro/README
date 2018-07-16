@@ -13,7 +13,7 @@ docker pull fgiuste/neuro
 docker build --tag neuro .
 
 # Frink:
-docker run -it --rm -v /data/FOX_FullResData:/data/FOX_FullResData:rw -v /data/Gliomics:/data/Gliomics:rw -v /code/notebooks:/data/notebooks:rw -v /code/scripts:/data/scripts:rw -v /nvme:/data/nvme:rw -p 8023:8888 -p 8024:8786 -p 8025:8787 fgiuste/neuro:V2
+docker run -it --rm -v /data/FOX_FullResData:/data/FOX_FullResData:rw -v /data/Gliomics:/data/Gliomics:rw -v /code/notebooks:/data/notebooks:rw -v /code/scripts:/data/scripts:rw -v /nvme:/data/nvme:rw -p 8023:8888 -p 8024:8786 -p 8025:8787 fgiuste/neuro:V3
 
 # Whorlwind:
 docker run -it --rm -v /home/fgiuste/ehechtDogTest:/data/ehechtDogTest:rw -v /home/fgiuste/Gliomics:/data/Gliomics:rw -v /home/fgiuste/FOX_FullResData:/data/FOX_FullResData:rw -v /home/fgiuste/output:/output:rw -v /home/fgiuste/notebooks:/home/neuro/notebooks:rw -p 8123:8888 -p 8124:8786 -p 8125:8787 fgiuste/neuro:V2
