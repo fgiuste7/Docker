@@ -19,7 +19,7 @@ docker run -it --rm -v /data/FOX_FullResData:/data/FOX_FullResData:rw -v /data/G
 docker run -it --rm -v /home/fgiuste/ehechtDogTest:/data/ehechtDogTest:rw -v /home/fgiuste/Gliomics:/data/Gliomics:rw -v /home/fgiuste/FOX_FullResData:/data/FOX_FullResData:rw -v /home/fgiuste/output:/output:rw -v /home/fgiuste/notebooks:/home/neuro/notebooks:rw -p 8123:8888 -p 8124:8786 -p 8125:8787 fgiuste/neuro:V2
 
 # ML Whorlwind:
-nvidia-docker run -it --rm -v /home/fgiuste/notebooks/Simpsons/undergrads:/home/neuro/notebooks:rw -v /home/fgiuste/output/undergrads:/output:rw -p 7777:8888 fgiuste/neuroml:simpsons 
+nvidia-docker run -it --rm -v /home/fgiuste/notebooks/Simpsons/undergrads:/home/neuro/notebooks:rw -v /home/fgiuste/output/undergrads:/output:rw -p 7777:8888 fgiuste/neuroml
 
 # To run jupyter-notebook:
 jupyter-notebook --notebook-dir=/
