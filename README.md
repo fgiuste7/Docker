@@ -10,4 +10,4 @@ And others
 docker pull fgiuste/neuro
 
 ## To build image from Dockerfile (Dockerfile must be in . and named "Dockerfile"):
-docker build --tag neuro 
+docker build --tag neuro .
