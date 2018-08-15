@@ -25,7 +25,15 @@ RUN mkdir -p /code/scripts \
     && mkdir -p /code/notebooks \
     && chmod -R 777 /code
 
-#----------------------
-# Switch to user: neuro
-#----------------------
+RUN mkdir -p /app \
+    && chmod -R 777 /app
+
+#-------------------------------------------
+# Add ANTS directory to PATH and ANTSPATH
+# Switch to user neuro
+#-------------------------------------------
 USER neuro
+
+ENV PATH=$PATH:/usr/lib/ants/
+ENV ANTSPATH=/usr/lib/ants/
+ENV ls='ls -lh --color=auto'
