@@ -1,5 +1,5 @@
 # Docker
-## Image Contains:
+## Neuro Image Contains:
 Miniconda
 Nipype
 FSL
