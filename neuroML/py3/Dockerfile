@@ -27,13 +27,6 @@ USER neuro
 RUN echo "alias ls='ls -lha --color=auto' " >> $PROFILE
 RUN echo "alias rm='rm -i' " >> $PROFILE
 
-#---------------
-# Install Girder
-#---------------
-USER root
-RUN pip install keras girder girder-client
-
-
 #----------------------------------------
 # Jupyter Notebook Profile setup
 # Also sets up server password.
@@ -49,9 +42,9 @@ RUN echo "{\"NotebookApp\": \
     " >> /home/neuro/.jupyter/jupyter_notebook_config.json
 
 
-#----------------------------------------------
+#----------------------------------
 # Change Folder Permissions as root
-#----------------------------------------------
+#----------------------------------
 USER root
 
 # Change file permissions
@@ -68,7 +61,7 @@ RUN echo "root:Docker!" | chpasswd
 
 
 #---------------------
-# install: 
+# Install: 
 # basic bash utilities
 # screen
 #---------------------
@@ -81,10 +74,14 @@ RUN apt-get update -qq && apt-get install -yq --no-install-recommends \
     && apt-get clean
 
 
-#-------------
-# Text Editors
-#-------------
+#---------------------
+# Install Text Editors
+#---------------------
 USER root
+
+RUN add-apt-repository -y ppa:webupd8team/sublime-text-3 \
+    && sudo apt-get update -qq \
+    && sudo apt-get install -y -q sublime-text-installer
 
 RUN apt-get update -qq \
     && apt-get install -y -q --no-install-recommends tree \
@@ -94,26 +91,36 @@ RUN apt-get update -qq \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN add-apt-repository -y ppa:webupd8team/sublime-text-3 \
-    && sudo apt-get update -qq \
-    && sudo apt-get install -y -q sublime-text-installer
-
+#------------------
+# Install python-tk
+#------------------
+RUN apt-get update -qq && apt-get install -yq --no-install-recommends python-tk \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 #---------------
-# install girder
+# Install girder
 #---------------
 USER root
-
 RUN pip install --no-cache-dir girder girder-client
 
+#--------------
+# Install Keras
+#--------------
+USER root
+RUN pip install --no-cache-dir keras
+
+#---------------------
+# Install nvidia-ml-py
+#---------------------
+USER root
+RUN pip install --no-cache-dir nvidia-ml-py
 
 #--------------------------
-# install pymongo and pycap
+# Install pymongo and pycap
 #--------------------------
 USER root
-
 RUN pip install --no-cache-dir pymongo pycap
-
 
 #------------------
 # Install niwidgets
@@ -121,14 +128,11 @@ RUN pip install --no-cache-dir pymongo pycap
 USER root
 RUN pip install --no-cache-dir niwidgets nilearn
 
-
 #--------------
-# opencv-python
-# python-tk
+# Install opencv-python
 #--------------
-RUN pip install opencv-python
-RUN apt-get update -qq && apt-get install -yq --no-install-recommends python-tk
-
+USER root
+RUN pip install --no-cache-dir opencv-python
 
 #----------------------------------
 # Change Folder Permissions as root
@@ -136,19 +140,17 @@ RUN apt-get update -qq && apt-get install -yq --no-install-recommends python-tk
 USER root
 
 # Change file permissions
-RUN chmod -R 777 /home/neuro
+RUN chmod -R 777 /home/neuro && chmod a+s /home/neuro
 RUN mkdir -p /code && chmod -R 777 /code
 RUN mkdir -p /data && chmod -R 777 /data
 RUN mkdir -p /output && chmod -R 777 /output
 RUN mkdir -p /app && chmod -R 777 /app
-RUN chmod -R 777 /home && chmod a+s /home
+RUN chmod -R 777 /notebooks
+RUN mkdir /data && chmod -R 777 /data
+RUN mkdir /output && chmod -R 777 /output
 
-#---------------------
-# Install nvidia-ml-py
-#---------------------
-USER root
+# RUN chmod -R 777 /home && chmod a+s /home
 
-RUN pip install --no-cache-dir nvidia-ml-py
 
 #---------------------
 # Login as user: neuro
