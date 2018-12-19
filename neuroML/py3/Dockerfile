@@ -42,17 +42,6 @@ RUN echo "{\"NotebookApp\": \
     " >> /home/neuro/.jupyter/jupyter_notebook_config.json
 
 
-#----------------------------------
-# Change Folder Permissions as root
-#----------------------------------
-USER root
-
-# Change file permissions
-RUN chmod -R 777 /home/neuro
-RUN chmod -R 777 /notebooks
-RUN mkdir /data && chmod -R 777 /data
-RUN mkdir /output && chmod -R 777 /output
-
 #------------------------------
 # Define ROOT password: Docker!
 #------------------------------
@@ -146,10 +135,6 @@ RUN mkdir -p /data && chmod -R 777 /data
 RUN mkdir -p /output && chmod -R 777 /output
 RUN mkdir -p /app && chmod -R 777 /app
 RUN chmod -R 777 /notebooks
-RUN mkdir /data && chmod -R 777 /data
-RUN mkdir /output && chmod -R 777 /output
-
-# RUN chmod -R 777 /home && chmod a+s /home
 
 
 #---------------------
