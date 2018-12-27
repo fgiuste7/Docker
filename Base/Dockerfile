@@ -26,7 +26,7 @@ RUN apt-get update -qq && apt-get install -yq --no-install-recommends \
        screen \
        tree \
        bzip2 \
-       gcc \
+       wget \
     && apt-get update -qq \
     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
     && localedef --force --inputfile=en_US --charmap=UTF-8 C.UTF-8 
@@ -48,6 +48,7 @@ RUN apt-get update -qq \
 #---------------------------
 USER root
 ENV BASHRC="/home/mainuser/.bash_aliases"
+ENV USR_HOME="/home/mainuser"
 RUN useradd --no-user-group --create-home --shell /bin/bash mainuser
 
 user mainuser

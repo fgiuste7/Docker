@@ -7,50 +7,47 @@
 #------------------------------------------------
 FROM fgiuste/base:base
 
-#---------------------------------------------------
-# Instal node.js through nvm (node version manager):
-#---------------------------------------------------
-USER root
+#--------------------------------------
+# Instal nvm (node.js version manager):
+#--------------------------------------
+USER mainuser
 RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
 
-#---------------------------------------
-# install nvm (node.js version manager):
-#---------------------------------------
-USER root
-RUN nvm install stable
+#-------------------------------------------
+# install node.js:
+# This loads nvm then loads bash_completion:
+#-------------------------------------------
+USER mainuser
+ENV NVM_DIR="$USR_HOME/.nvm"
+RUN [ -s "${NVM_DIR}/nvm.sh" ] && \. "${NVM_DIR}/nvm.sh" \
+    && [ -s "${NVM_DIR}/bash_completion" ] && \. "${NVM_DIR}/bash_completion" \
+    && nvm install stable
 
 #-------------------------
 # install npm and node.js:
 #-------------------------
 USER root
-RUN wget -qO- https://deb.nodesource.com/setup_8.x | sudo -E bash -
-RUN apt-get install nodejs
+RUN wget -qO- https://deb.nodesource.com/setup_8.x | sudo -E bash - \
+    && apt-get install -y nodejs
 
-#------------------------
-# install webix with npm:
-#------------------------
-USER root
-RUN npm install --save webix
+#---------------------
+# install http-server:
+#---------------------
+RUN npm install http-server -g
 
-#-------------------------
-# install jquery with npm:
-#-------------------------
-USER root
-RUN npm install --save jquery
+#-----------------------------------
+# Install dependencies and Run app :
+#-----------------------------------
+USER mainuser
+WORKDIR /app
+RUN echo "#!/bin/bash"  > "$USR_HOME/run_app.sh"
+RUN echo "npm install /app/." >> "$USR_HOME/run_app.sh"
+RUN echo "http-server -p 8888 -c-1 /app" >> "$USR_HOME/run_app.sh"
 
-#-------------------------------------
-# initialize repo (within repository):
-#-------------------------------------
-USER root
-RUN npm init
-
-#------------------------------------
-# Run app (within githib repository):
-#------------------------------------
-USER root
-RUN http-server -a localhost -p 8888 -c-1
+CMD $USR_HOME/run_app.sh
 
 #---------------------------------------------------
 # Login as root: ENTRYPOINT will switch to mainuser:
 #---------------------------------------------------
 USER root
+RUN chmod 757 $USR_HOME/run_app.sh
