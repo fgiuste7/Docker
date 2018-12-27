@@ -23,6 +23,9 @@ RUN useradd --no-user-group --create-home --shell /bin/bash neuro
 
 RUN mkdir -p /home/neuro/
 
+#---------------------------------------
+# Add profile with personal preferences:
+#---------------------------------------
 USER neuro
 RUN echo "alias ls='ls -lha --color=auto' " >> $PROFILE
 RUN echo "alias rm='rm -i' " >> $PROFILE
@@ -47,7 +50,6 @@ RUN echo "{\"NotebookApp\": \
 #------------------------------
 USER root
 RUN echo "root:Docker!" | chpasswd
-
 
 #---------------------
 # Install: 
@@ -117,9 +119,9 @@ RUN pip install --no-cache-dir pymongo pycap
 USER root
 RUN pip install --no-cache-dir niwidgets nilearn
 
-#--------------
+#----------------------
 # Install opencv-python
-#--------------
+#----------------------
 USER root
 RUN pip install --no-cache-dir opencv-python
 
@@ -136,14 +138,13 @@ RUN mkdir -p /output && chmod -R 777 /output
 RUN mkdir -p /app && chmod -R 777 /app
 RUN chmod -R 777 /notebooks
 
-
 #---------------------
 # Login as user: neuro
 #---------------------
 USER neuro
 WORKDIR /home/neuro
 
-ENV ls='ls -lh --color=auto'
+ENV ls='ls -lh --color=auto' # Personal Preference
 
 ENTRYPOINT ["jupyter-notebook", "--notebook-dir=/"]
 
