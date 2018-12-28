@@ -5,7 +5,7 @@
 # https://github.com/phusion/baseimage-docker   |
 # From Ubuntu 16.04.5                           |
 #------------------------------------------------
-FROM fgiuste/base:nodejs # FROM base:base?
+FROM fgiuste/base:base
 
 #-------------
 # install pip:
