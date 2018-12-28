@@ -80,7 +80,7 @@ RUN mkdir -p /code/scripts \
     && mkdir -p /code/notebooks \
     && chmod -R 777 /code
 
-RUN mkdir -p /app && chmod -R 777 /app
+RUN mkdir -p /apps && chmod -R 777 /apps
 
 #-----------------------------------
 # Define ROOT password: FOR TESTING:

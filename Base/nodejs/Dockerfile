@@ -35,14 +35,14 @@ RUN wget -qO- https://deb.nodesource.com/setup_8.x | sudo -E bash - \
 #---------------------
 RUN npm install http-server -g
 
-#-----------------------------------
-# Install dependencies and Run app :
-#-----------------------------------
+#----------------------------------
+# Install dependencies and Run app:
+#----------------------------------
 USER mainuser
-WORKDIR /app
+WORKDIR /apps
 RUN echo "#!/bin/bash"  > "$USR_HOME/run_app.sh"
-RUN echo "npm install /app/." >> "$USR_HOME/run_app.sh"
-RUN echo "http-server -p 8888 -c-1 /app" >> "$USR_HOME/run_app.sh"
+RUN echo "npm install /apps/." >> "$USR_HOME/run_app.sh"
+RUN echo "http-server -p 8888 -c-1 /apps" >> "$USR_HOME/run_app.sh"
 
 CMD $USR_HOME/run_app.sh
 
@@ -51,3 +51,9 @@ CMD $USR_HOME/run_app.sh
 #---------------------------------------------------
 USER root
 RUN chmod 757 $USR_HOME/run_app.sh
+
+#------------
+# How to run:
+#------------
+# within project directory containing index.html
+# docker run --rm -p 8080:8888 -v ${PWD}:/app/:rw fgiuste/base:nodejs

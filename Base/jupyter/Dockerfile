@@ -46,7 +46,7 @@ RUN conda install -y traits \
 RUN bash -c "rm -rf /opt/conda/pkgs/*"
 
 #----------------------------
-# Allow mainuser pip install:
+# Allow mainuser conda install:
 #----------------------------
 USER root
 RUN chmod -R 777 /opt/conda
