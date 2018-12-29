@@ -1,0 +1,56 @@
+version: "3"
+services:
+  web:
+    # Website Service
+    image: fgiuste/nodejs:webixPapaya
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 50M
+    ports: 
+      - "8080:8888"
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    networks: 
+      - overlay
+  flask:
+    # Flask Service
+    image: fgiuste/flask:test
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 50M
+    ports: 
+      - "8081:8888"
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    networks: 
+      - overlay
+  visualizer:
+    # Stack Visualization Service
+    image: dockersamples/visualizer:stable
+    ports: 
+      - "8090:8080"
+    volumes: 
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    networks: 
+      - overlay
+networks:
+  overlay:
+    # opt: encrypted
+      # encrypt application data as well as service management traffic (default)
+    # default settings for network: load-balanced overlay network
+    # will publish on 0.0.0.0
