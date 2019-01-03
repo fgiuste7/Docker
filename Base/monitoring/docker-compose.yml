@@ -1,19 +1,20 @@
 version: "3"
 
+volumes:
+  grafana : {}
+  prometheus : {}
+
 services:
-  web:
+  papaya:
     # Website Service
     image: fgiuste/nodejs:webixPapaya
     deploy:
-      replicas: 1
-      restart_policy:
-        condition: on-failure
       resources:
         limits:
           cpus: "0.1"
           memory: 50M
     ports: 
-      - "8080:8888"
+      - "8085:8888"
     deploy:
       placement:
         constraints: [node.role == manager]
@@ -23,7 +24,6 @@ services:
     # Flask Service
     image: fgiuste/flask:test
     deploy:
-      replicas: 1
       restart_policy:
         condition: on-failure
       resources:
@@ -31,7 +31,7 @@ services:
           cpus: "0.1"
           memory: 50M
     ports: 
-      - "8081:8888"
+      - "8086:8888"
     deploy:
       placement:
         constraints: [node.role == manager]
@@ -49,6 +49,50 @@ services:
         constraints: [node.role == manager]
     networks: 
       - overlay
+
+  cadvisor:
+    image: google/cadvisor:latest
+    ports:
+    - "8080:8080"
+    volumes:
+    - /:/rootfs:ro
+    - /var/run:/var/run:ro
+    - /sys:/sys:ro
+    - /var/lib/docker/:/var/lib/docker:ro
+    #- /dev/disk/:/dev/disk:ro
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    networks: 
+      - overlay
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    command:
+    - --config.file=/etc/prometheus/prometheus.yml
+    volumes: 
+      - "./prometheus.yml:/etc/prometheus/prometheus.yml:ro"
+      - "prometheus:/prometheus:rw"
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    networks:
+      - overlay
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - "grafana:/var/lib/grafana:rw"
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    networks:
+      - overlay
+
 networks:
   overlay:
     # opt: encrypted
