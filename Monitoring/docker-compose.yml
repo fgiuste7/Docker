@@ -9,21 +9,25 @@ services:
     # Website Service
     image: fgiuste/nodejs:webixPapaya
     deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
       resources:
         limits:
           cpus: "0.1"
           memory: 50M
     ports: 
       - "8085:8888"
-    deploy:
-      placement:
-        constraints: [node.role == manager]
     networks: 
       - overlay
+
   flask:
     # Flask Service
     image: fgiuste/flask:test
     deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == worker]
       restart_policy:
         condition: on-failure
       resources:
@@ -32,26 +36,38 @@ services:
           memory: 50M
     ports: 
       - "8086:8888"
-    deploy:
-      placement:
-        constraints: [node.role == manager]
     networks: 
       - overlay
+
   visualizer:
     # Stack Visualization Service
     image: dockersamples/visualizer:stable
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+      restart_policy:
+        condition: on-failure
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 50M
     ports: 
       - "8090:8080"
     volumes: 
       - "/var/run/docker.sock:/var/run/docker.sock"
-    deploy:
-      placement:
-        constraints: [node.role == manager]
     networks: 
       - overlay
 
   cadvisor:
+    # container usage metrics
     image: google/cadvisor:latest
+    command:
+    - -docker_only
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
     ports:
     - "8080:8080"
     volumes:
@@ -60,41 +76,45 @@ services:
     - /sys:/sys:ro
     - /var/lib/docker/:/var/lib/docker:ro
     #- /dev/disk/:/dev/disk:ro
-    deploy:
-      placement:
-        constraints: [node.role == manager]
     networks: 
-      - overlay
+      - monitors
 
   prometheus:
-    image: prom/prometheus:latest
+    # Metrics handling
+    image: fgiuste/prometheus:latest #prom/prometheus:latest with default prometheus.yml preloaded
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
     ports:
       - "9090:9090"
     command:
     - --config.file=/etc/prometheus/prometheus.yml
     volumes: 
-      - "./prometheus.yml:/etc/prometheus/prometheus.yml:ro"
+      #- "./prometheus.yml:/etc/prometheus/prometheus.yml:ro"
       - "prometheus:/prometheus:rw"
-    deploy:
-      placement:
-        constraints: [node.role == manager]
     networks:
-      - overlay
+      - monitors
 
   grafana:
+    # Metrics Graphing
     image: grafana/grafana:latest
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+      restart_policy:
+        condition: on-failure
     ports:
       - "3000:3000"
     volumes:
       - "grafana:/var/lib/grafana:rw"
-    deploy:
-      placement:
-        constraints: [node.role == manager]
     networks:
-      - overlay
+      - monitors
 
 networks:
   overlay:
+  monitors:
     # opt: encrypted
       # encrypt application data as well as service management traffic (default)
     # default settings for network: load-balanced overlay network
