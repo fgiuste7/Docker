@@ -19,6 +19,12 @@ RUN apt-get update && apt-get install -y python-pip
 USER mainuser
 RUN pip install flask
 
+# -------------------
+# install flask-cors:
+#--------------------
+USER mainuser
+RUN pip install flask-cors
+
 #---------------
 # run flask app:
 # host='0.0.0.0'
