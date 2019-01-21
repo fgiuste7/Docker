@@ -20,7 +20,7 @@ scrape_configs:
       - targets: ['prometheus:9090']
   - job_name: 'cadvisor'
     static_configs:
-      - targets: ['cadvisor:8080']
+      - targets: ['cadvisor:18080']
   - job_name: 'nodeexporter'
     static_configs:
-      - targets: ['nodeexporter:9100']
+      - targets: ['nodeexporter:19100']
