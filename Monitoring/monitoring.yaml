@@ -25,7 +25,7 @@ services:
           cpus: "0.1"
           memory: 50M
     ports: 
-      - "18090:8080"
+      - "8090:8080"
     volumes: 
       - "/var/run/docker.sock:/var/run/docker.sock"
     networks: 
@@ -47,7 +47,7 @@ services:
       restart_policy:
         condition: on-failure
     ports:
-      - "19100:9100"
+      - "9100:9100"
     volumes:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
@@ -82,7 +82,7 @@ services:
       restart_policy:
         condition: on-failure
     ports:
-      - "18080:8080"
+      - "8080:8080"
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:ro
