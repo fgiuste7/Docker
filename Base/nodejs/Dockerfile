@@ -56,4 +56,4 @@ RUN chmod 757 $USR_HOME/run_app.sh
 # How to run:
 #------------
 # within project directory containing index.html
-# docker run --rm -p 8080:8888 -v ${PWD}:/app/:rw fgiuste/base:nodejs
+# docker run --rm -p 8123:8888 -v ${PWD}:/app/:rw fgiuste/base:nodejs
