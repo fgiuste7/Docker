@@ -1,6 +1,9 @@
 Felipe Giuste
 README updated: 2/6/2019
 
+# within nodes:
+docker swarm init
+
 # If monitoring GPU, set default runtime to nvidia on monitored nodes:
 /etc/docker/daemon.json
 {
