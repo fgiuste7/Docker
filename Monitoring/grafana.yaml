@@ -5,7 +5,7 @@ volumes:
     external: true
 
 networks:
-  monitors:
+  grafana:
 
 services:
   grafana:
@@ -22,4 +22,4 @@ services:
     volumes:
       - "grafana_volume:/var/lib/grafana:rw"
     networks:
-      - monitors
+      - grafana
