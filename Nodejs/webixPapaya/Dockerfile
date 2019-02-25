@@ -17,7 +17,7 @@ RUN apt install -y git-all
 # Add scripts to final image:
 #----------------------------
 USER root
-RUN git clone --quiet https://github.com/fgiuste7/webixPapaya.git /apps/
+RUN git clone --quiet https://github.com/dgutman/webixPapaya.git /apps/
 
 #---------------------------------------------------
 # Login as root: ENTRYPOINT will switch to mainuser:
