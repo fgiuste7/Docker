@@ -4,5 +4,6 @@
 docker build --no-cache --tag fgiuste/nodejs:webixPapaya .
 
 ## Running:
-port=8888
+port=8777
 docker run -d --rm -p ${port}:8888 --name webixPapaya fgiuste/nodejs:webixPapaya
+

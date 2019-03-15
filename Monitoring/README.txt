@@ -16,6 +16,8 @@ docker swarm init
 	}
 }
 
+# Pull Dockerfiles and .yaml files:
+git clone https://github.com/fgiuste7/Docker.git
 
 # Run Monitoring stack on nodes to monitor:
 docker stack deploy --compose-file monitoring.yaml monitor
