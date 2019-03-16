@@ -1,4 +1,4 @@
-# Install Docker using Salt:
+##### Install Docker using Salt: #####
 
 sudo salt 'SM*' cmd.run 'apt-get update'
 
@@ -36,6 +36,33 @@ sudo salt 'SM*' cmd.run 'systemctl daemon-reload && echo Hello'
 sudo salt 'SM*' cmd.run 'systemctl restart docker && echo Hello'
 sudo salt 'SM*' cmd.run 'systemctl show --property=Environment docker'
 
-## Test Proxy:
+## Test Docker Proxy:
 sudo salt 'SM*' cmd.run 'docker run hello-world'
 
+
+##### Git clone using Salt: #####
+sudo salt 'SM*' git.clone user=root cwd=/Github/Docker url=https://github.com/fgiuste7/Docker.git
+
+
+##### Setup Monitoring using Salt: #####
+# Use repository in /home/fgiuste
+## Update Repository: (Run in single salt minion since /home is shared in all minions)
+sudo salt 'SM1.maas' git.pull user=root cwd=/home/fgiuste/Github/Docker
+
+# Start swarm:
+sudo salt 'SM1.maas' cmd.run 'docker swarm init --advertise-addr=`hostname --ip-address`'
+
+# Start Monitor stack:
+sudo salt 'SM1.maas' cmd.run cwd=/home/fgiuste/Github/Docker/Monitoring 'docker stack deploy --compose-file monitoring.yaml monitor'
+
+
+
+
+
+##### Bonus #####
+# Install Docker for Python: (NOT required)
+#sudo salt 'SM1*' pip.install pkgs=docker proxy=170.140.138.165:8000
+#sudo salt 'SM1*' pip.install pkgs=docker-engine proxy=170.140.138.165:8000
+
+# Get minions primary ip address:
+sudo salt 'SM1.maas' cmd.run 'hostname --ip-address'
