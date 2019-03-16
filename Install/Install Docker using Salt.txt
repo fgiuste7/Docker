@@ -1,0 +1,41 @@
+# Install Docker using Salt:
+
+sudo salt 'SM*' cmd.run 'apt-get update'
+
+sudo salt 'SM*' cmd.run 'apt-get install -y apt-transport-https'
+sudo salt 'SM*' cmd.run 'apt-get install -y ca-certificates'
+sudo salt 'SM*' cmd.run 'apt-get install -y curl'
+sudo salt 'SM*' cmd.run 'apt-get install -y gnupg-agent'
+sudo salt 'SM*' cmd.run 'apt-get install -y software-properties-common'
+
+
+# Transfer gpg key:
+## Save gpg key locally:
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg > ${TMP_LOCATION}
+## Transfer local copy using Salt:
+sudo salt-cp 'SM*' ${TMP_LOCATION} /tmp/docker.gpg
+
+
+# Install Docker:
+sudo salt 'SM*' cmd.run 'add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" '
+sudo salt 'SM*' cmd.run 'apt-get install -y docker-ce docker-ce-cli containerd.io'
+
+
+# Setup Docker Proxy:
+## Create folder:
+sudo salt 'SM*' cmd.run 'mkdir -p /etc/systemd/system/docker.service.d'
+
+## Define proxy:
+sudo salt 'SM*' cmd.run 'echo "[Service]\nEnvironment=\"HTTP_PROXY=170.140.138.165:8000\" " > /etc/systemd/system/docker.service.d/http-proxy.conf'
+
+## Confirm proxy files:
+sudo salt 'SM*' cmd.run 'cat /etc/systemd/system/docker.service.d/http-proxy.conf'
+
+## Reload daemons:
+sudo salt 'SM*' cmd.run 'systemctl daemon-reload && echo Hello'
+sudo salt 'SM*' cmd.run 'systemctl restart docker && echo Hello'
+sudo salt 'SM*' cmd.run 'systemctl show --property=Environment docker'
+
+## Test Proxy:
+sudo salt 'SM*' cmd.run 'docker run hello-world'
+
