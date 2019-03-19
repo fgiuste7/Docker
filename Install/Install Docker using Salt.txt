@@ -49,11 +49,13 @@ sudo salt 'SM*' git.clone user=root cwd=/Github/Docker url=https://github.com/fg
 ## Update Repository: (Run in single salt minion since /home is shared in all minions)
 sudo salt 'SM1.maas' git.pull user=root cwd=/home/fgiuste/Github/Docker
 
-# Start swarm:
-sudo salt 'SM1.maas' cmd.run 'docker swarm init --advertise-addr=`hostname --ip-address`'
+# Start swarm: Need to specify addvertise-addr
+#`hostname --ip-address`' : Gives .80 addresses, want .10 addresses
+sudo salt 'SM*' cmd.run 'docker swarm init --advertise-addr=`hostname -I | cut -d " " -f2,2` '
+# WARNING: SM5.maas advertising on .80 network
 
 # Start Monitor stack:
-sudo salt 'SM1.maas' cmd.run cwd=/home/fgiuste/Github/Docker/Monitoring 'docker stack deploy --compose-file monitoring.yaml monitor'
+sudo salt 'SM*' cmd.run cwd=/home/fgiuste/Github/Docker/Monitoring 'docker stack deploy --compose-file monitoring.yaml monitor'
 
 
 
@@ -64,5 +66,8 @@ sudo salt 'SM1.maas' cmd.run cwd=/home/fgiuste/Github/Docker/Monitoring 'docker 
 #sudo salt 'SM1*' pip.install pkgs=docker proxy=170.140.138.165:8000
 #sudo salt 'SM1*' pip.install pkgs=docker-engine proxy=170.140.138.165:8000
 
-# Get minions primary ip address:
-sudo salt 'SM1.maas' cmd.run 'hostname --ip-address'
+# Get minion's primary ip address: (.80 network)
+sudo salt 'SM*' cmd.run 'hostname --ip-address'
+
+# Get minion's second ip address (.10 network)
+sudo salt 'SM*' cmd.run 'hostname -I | cut -d " " -f2,2'
