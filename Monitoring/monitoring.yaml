@@ -19,7 +19,7 @@ services:
       placement:
         constraints: [node.role == manager]
       restart_policy:
-        condition: unless-stopped
+        condition: always
       resources:
         limits:
           cpus: "0.1"
@@ -46,7 +46,7 @@ services:
       placement:
         constraints: [node.role == manager]
       restart_policy:
-        condition: unless-stopped
+        condition: always
     #expose:
     #  - "9100"
     volumes:
@@ -82,7 +82,7 @@ services:
       placement:
         constraints: [node.role == manager]      
       restart_policy:
-        condition: unless-stopped
+        condition: always
     #expose:
     #  - "8080"
     volumes:
@@ -101,7 +101,7 @@ services:
       placement:
         constraints: [node.role == manager]
       restart_policy:
-        condition: unless-stopped
+        condition: always
     ports:
       - "9090:9090"
     command:
