@@ -19,7 +19,7 @@ services:
       placement:
         constraints: [node.role == manager]
       restart_policy:
-        condition: on-failure
+        condition: unless-stopped
       resources:
         limits:
           cpus: "0.1"
@@ -32,6 +32,7 @@ services:
       - monitors
 
   nodeexporter:
+    # System Monitoring Service
     image: prom/node-exporter:latest
     # pid: "host"
     user: root
@@ -45,7 +46,7 @@ services:
       placement:
         constraints: [node.role == manager]
       restart_policy:
-        condition: on-failure
+        condition: unless-stopped
     #expose:
     #  - "9100"
     volumes:
@@ -58,6 +59,7 @@ services:
       - monitors
 
   dcgm_exporter:
+    # GPU Monitoring Service
     image: nvidia/dcgm-exporter:latest
     deploy:
       replicas: 1
@@ -71,7 +73,7 @@ services:
       - monitors
 
   cadvisor:
-    # container usage metrics
+    # Container Monitoring Service
     image: google/cadvisor:latest
     command:
       - -docker_only
@@ -80,7 +82,7 @@ services:
       placement:
         constraints: [node.role == manager]      
       restart_policy:
-        condition: on-failure
+        condition: unless-stopped
     #expose:
     #  - "8080"
     volumes:
@@ -92,14 +94,14 @@ services:
       - monitors
 
   prometheus:
-    # Metrics handling
+    # Metrics Database
     image: fgiuste/prometheus:latest #prom/prometheus:latest with default prometheus.yml preloaded
     deploy:
       replicas: 1
       placement:
         constraints: [node.role == manager]
       restart_policy:
-        condition: on-failure
+        condition: unless-stopped
     ports:
       - "9090:9090"
     command:
