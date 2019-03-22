@@ -19,7 +19,8 @@ services:
       placement:
         constraints: [node.role == manager]
       restart_policy:
-        condition: always
+        condition: any
+        delay: 5s
       resources:
         limits:
           cpus: "0.1"
@@ -46,7 +47,8 @@ services:
       placement:
         constraints: [node.role == manager]
       restart_policy:
-        condition: always
+        condition: any
+        delay: 5s
     #expose:
     #  - "9100"
     volumes:
@@ -67,6 +69,7 @@ services:
         constraints: [node.role == manager]
       restart_policy:
         condition: on-failure
+        delay: 5s
     volumes:
       - prometheus_txt:/run/prometheus
     networks:
@@ -82,7 +85,8 @@ services:
       placement:
         constraints: [node.role == manager]      
       restart_policy:
-        condition: always
+        condition: any
+        delay: 5s
     #expose:
     #  - "8080"
     volumes:
@@ -101,7 +105,8 @@ services:
       placement:
         constraints: [node.role == manager]
       restart_policy:
-        condition: always
+        condition: any
+        delay: 5s
     ports:
       - "9090:9090"
     command:
