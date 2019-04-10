@@ -1,5 +1,5 @@
 # 4/9/2019 (FG)
-# fgiuste/base:neuro
+# fgiuste/neuro:nopswd
 #------------------------------------------------
 # Inherits: phusion/baseimage:0.10.2            |
 # https://github.com/phusion/baseimage-docker   |

@@ -1,5 +1,5 @@
 # 12/26/2018 (FG)
-# fgiuste/base:jupyter
+# fgiuste/jupyter:nopswd
 #------------------------------------------------
 # Inherits: phusion/baseimage:0.10.2            |
 # https://github.com/phusion/baseimage-docker   |
@@ -45,9 +45,9 @@ RUN conda install -y traits \
 
 RUN bash -c "rm -rf /opt/conda/pkgs/*"
 
-#----------------------------
+#------------------------------
 # Allow mainuser conda install:
-#----------------------------
+#------------------------------
 USER root
 RUN chmod -R 777 /opt/conda
 
