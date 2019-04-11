@@ -69,9 +69,9 @@ RUN apt-get update -qq \
 # Install scikit-learn:
 # Version: 0.20.3
 #----------------------
-USER root
-RUN pip install scipy==1.2.1
-RUN pip install scikit-learn==0.20.3
+#USER root
+#RUN pip install scipy==1.2.1
+#RUN pip install scikit-learn==0.20.3
 
 #-----------------------
 # Install opencv-python:
@@ -85,7 +85,7 @@ RUN pip install --no-cache-dir opencv-python==4.1.0.25
 # Version: 0.12.0
 #----------------
 USER root
-RUN pip install --no-cache-dir "dask[complete]"==0.12.0
+RUN pip install --no-cache-dir "dask[complete]"==1.1.5
 
 #---------------
 # Install zarr:
