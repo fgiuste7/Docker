@@ -5,18 +5,18 @@
 # https://github.com/jupyter/docker-stacks/blob/master/tensorflow-notebook/Dockerfile
 #----------------------------------------------------------
 FROM tensorflow/tensorflow:latest-gpu-py3
-ENV PROFILE='/home/main/.profile'
+ENV PROFILE='/home/mainuser/.profile'
 
 #----------------------------------------------
-# Create new user: main
+# Create new user: mainuser
 #----------------------------------------------
 USER root
-RUN useradd --no-user-group --create-home --shell /bin/bash main
+RUN useradd --no-user-group --create-home --shell /bin/bash mainuser
 
 #---------------------------------------
 # Add profile with personal preferences:
 #---------------------------------------
-USER main
+USER mainuser
 RUN echo "alias ls='ls -lha --color=auto' " >> $PROFILE
 RUN echo "alias rm='rm -i' " >> $PROFILE
 
@@ -27,8 +27,8 @@ RUN echo "alias rm='rm -i' " >> $PROFILE
 #----------------------------------------
 USER root
 
-RUN mkdir -p /home/main/.jupyter \
-    && echo 'c.NotebookApp.ip = "0.0.0.0"' > /home/main/.jupyter/jupyter_notebook_config.py
+RUN mkdir -p /home/mainuser/.jupyter \
+    && echo 'c.NotebookApp.ip = "0.0.0.0"' > /home/mainuser/.jupyter/jupyter_notebook_config.py
 
 #--------------------
 # Install ipywidgets:
@@ -100,7 +100,7 @@ RUN pip install --no-cache-dir zarr==2.3.1
 USER root
 
 # Change file permissions
-RUN chmod -R 777 /home/main && chmod a+s /home/main
+RUN chmod -R 777 /home/mainuser && chmod a+s /home/mainuser
 RUN mkdir -p /code && chmod -R 777 /code
 RUN mkdir -p /data && chmod -R 777 /data
 RUN mkdir -p /output && chmod -R 777 /output
@@ -114,10 +114,10 @@ USER root
 RUN echo "root:Docker!" | chpasswd
 
 #---------------------
-# Login as user: main:
+# Login as user: mainuser:
 #---------------------
-USER main
-WORKDIR /home/main
+USER mainuser
+WORKDIR /home/mainuser
 
 CMD ["jupyter-notebook", "--notebook-dir=/"]
 
