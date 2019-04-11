@@ -51,7 +51,7 @@ ENV BASHRC="/home/mainuser/.bash_aliases"
 ENV USR_HOME="/home/mainuser"
 RUN useradd --no-user-group --create-home --shell /bin/bash mainuser
 
-user mainuser
+USER mainuser
 WORKDIR /home/mainuser
 RUN echo "alias ls='ls -lh --color=auto'" >> $BASHRC
 

@@ -1,0 +1,6 @@
+# fgiuste/ml:py3
+
+Nvidia GPU Python 3 image with:
+scipy==1.2.1
+scikit-learn==0.20.3
+openCV==4.1.0.25

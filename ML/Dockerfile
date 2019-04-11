@@ -28,17 +28,14 @@ RUN echo "alias rm='rm -i' " >> $PROFILE
 USER root
 
 RUN mkdir -p /home/main/.jupyter \
-    && echo c.NotebookApp.ip = \"0.0.0.0\" > /home/main/.jupyter/jupyter_notebook_config.py
+    && echo 'c.NotebookApp.ip = "0.0.0.0"' > /home/main/.jupyter/jupyter_notebook_config.py
 
-RUN echo "{\"NotebookApp\": \
-    { \"password\": \"sha1:317d49d226c9:09f54bfd5868c8897e261a281fa9b7fea8904c5d\" } } \
-    " >> /home/main/.jupyter/jupyter_notebook_config.json
-
-#------------------------------
-# Define ROOT password: Docker!
-#------------------------------
+#--------------------
+# Install ipywidgets:
+#--------------------
 USER root
-RUN echo "root:Docker!" | chpasswd
+RUN pip install ipywidgets
+
 
 #---------------------
 # Install: 
@@ -59,11 +56,6 @@ RUN apt-get update -qq && apt-get install -yq --no-install-recommends \
 # vim, nano, less
 #----------------------
 USER root
-
-RUN add-apt-repository -y ppa:webupd8team/sublime-text-3 \
-    && sudo apt-get update -qq \
-    && sudo apt-get install -y -q sublime-text-installer
-
 RUN apt-get update -qq \
     && apt-get install -y -q --no-install-recommends vim \
                                                      nano \
@@ -71,21 +63,40 @@ RUN apt-get update -qq \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-#----------------------------
-# Install niwidgets, nilearn:
-#----------------------------
-USER root
-RUN pip install --no-cache-dir niwidgets nilearn
-
 #----------------------
-# Install opencv2-python
+# Install scipy:
+# Version: 1.2.1
+# Install scikit-learn:
+# Version: 0.20.3
 #----------------------
 USER root
-RUN pip install --no-cache-dir opencv2-python
+RUN pip install scipy==1.2.1
+RUN pip install scikit-learn==0.20.3
 
-#----------------------------------
-# Change Folder Permissions as root
-#----------------------------------
+#-----------------------
+# Install opencv-python:
+# Version: 4.1.0.25
+#-----------------------
+USER root
+RUN pip install --no-cache-dir opencv-python==4.1.0.25
+
+#----------------
+# Install dask:
+# Version: 0.12.0
+#----------------
+USER root
+RUN pip install --no-cache-dir "dask[complete]"==0.12.0
+
+#---------------
+# Install zarr:
+# Version: 2.3.1
+#---------------
+USER root
+RUN pip install --no-cache-dir zarr==2.3.1
+
+#-----------------------------------
+# Change Folder Permissions as root:
+#-----------------------------------
 USER root
 
 # Change file permissions
@@ -93,18 +104,21 @@ RUN chmod -R 777 /home/main && chmod a+s /home/main
 RUN mkdir -p /code && chmod -R 777 /code
 RUN mkdir -p /data && chmod -R 777 /data
 RUN mkdir -p /output && chmod -R 777 /output
-RUN mkdir -p /app && chmod -R 777 /app
+RUN mkdir -p /apps && chmod -R 777 /apps
 RUN chmod -R 777 /notebooks
 
+#------------------------------
+# Define ROOT password: Docker!
+#------------------------------
+USER root
+RUN echo "root:Docker!" | chpasswd
+
 #---------------------
-# Login as user: main
+# Login as user: main:
 #---------------------
 USER main
 WORKDIR /home/main
 
-# Personal Preference:
-ENV ls='ls -lh --color=auto' 
-
-ENTRYPOINT ["jupyter-notebook", "--notebook-dir=/"]
+CMD ["jupyter-notebook", "--notebook-dir=/"]
 
 
