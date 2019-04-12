@@ -94,9 +94,18 @@ RUN pip install --no-cache-dir "dask[complete]"==1.1.5
 USER root
 RUN pip install --no-cache-dir zarr==2.3.1
 
-#-----------------------------------
-# Change Folder Permissions as root:
-#-----------------------------------
+#-----------------------------
+# Install pandoc and TeX Live:
+# To convert: ipynb -> pdf
+#-----------------------------
+USER root
+RUN apt-get update -qq && apt-get install -yq pandoc texlive-xetex \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+#---------------------------
+# Change Folder Permissions:
+#---------------------------
 USER root
 
 # Change file permissions
