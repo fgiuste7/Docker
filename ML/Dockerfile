@@ -94,6 +94,13 @@ RUN pip install --no-cache-dir "dask[complete]"==1.1.5
 USER root
 RUN pip install --no-cache-dir zarr==2.3.1
 
+#-----------------
+# Install seaborn:
+# Version: 0.9.0
+#-----------------
+USER root
+RUN pip install --no-cache-dir seaborn==0.9.0
+
 #-----------------------------
 # Install pandoc and TeX Live:
 # To convert: ipynb -> pdf
@@ -116,15 +123,9 @@ RUN mkdir -p /output && chmod -R 777 /output
 RUN mkdir -p /apps && chmod -R 777 /apps
 RUN chmod -R 777 /notebooks
 
-#------------------------------
-# Define ROOT password: Docker!
-#------------------------------
-USER root
-RUN echo "root:Docker!" | chpasswd
-
-#---------------------
+#-------------------------
 # Login as user: mainuser:
-#---------------------
+#-------------------------
 USER mainuser
 WORKDIR /home/mainuser
 
