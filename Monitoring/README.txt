@@ -19,6 +19,9 @@ git clone https://github.com/fgiuste7/Docker.git
 # Go to Directory "Monitoring/" within pulled Repository:
 cd Monitoring
 
+# Using docker-compose:
+docker-compose -d -p monitor -f monitoring.yaml up
+
 # Start single-node swarm to run Docker stack:
 docker swarm init
 ## If Error, try: 
@@ -33,5 +36,4 @@ docker stack deploy --compose-file monitoring.yaml monitor
 docker volume create grafana_volume
 
 ## Run resource graphing with grafana on head node:
-
 docker stack deploy --compose-file grafana.yaml grafana
