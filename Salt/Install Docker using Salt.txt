@@ -55,18 +55,18 @@ sudo salt 'SM1.maas' git.pull user=root cwd=/home/fgiuste/Github/Docker
 sudo salt 'SM*' cmd.run 'docker swarm init --advertise-addr=`hostname -I | cut -d " " -f2,2` '
 # WARNING: SM5.maas advertising on .80 network
 
-# ALTERNATIVEL docker-compose:
-sudo salt 'SM*' cmd.run 'apt-get install -y docker-compose'
-
-
 # START Monitor stack:
 sudo salt 'SM*' cmd.run cwd=/home/fgiuste/Github/Docker/Monitoring 'docker stack deploy --compose-file monitoring.yaml monitor'
-
-# LIST runnin stacks:
+# LIST running stacks:
 sudo salt 'SM*' cmd.run cwd=/home/fgiuste/Github/Docker/Monitoring 'docker stack ls'
-
 # STOP Monitor stack:
 sudo salt 'SM*' cmd.run cwd=/home/fgiuste/Github/Docker/Monitoring 'docker stack rm monitor'
+
+# ALTERNATIVE docker-compose:
+sudo salt 'SM*' cmd.run 'apt-get install -y docker-compose'
+sudo salt 'SM*' cmd.run cwd=/home/fgiuste/Github/Docker/Monitoring 'docker-compose -p monitor -f monitoring.yaml up -d'
+
+
 
 
 
