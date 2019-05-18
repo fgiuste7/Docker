@@ -39,9 +39,11 @@ RUN { \
 RUN sed -i -e 's,main *$,main contrib non-free,g' /etc/apt/sources.list.d/neurodebian.sources.list; grep -q 'deb .* multiverse$' /etc/apt/sources.list || sed -i -e 's,universe *$,universe multiverse,g' /etc/apt/sources.list
 
 
-#---------------------------
-# Create Default Entrypoint:
-#---------------------------
+#--------------------------
+# Create Default Entrypoint
+#--------------------------
+USER root
+
 ENV RWB_ENTRYPOINT="/home/startup.sh"
 
 RUN if [ ! -f "$RWB_ENTRYPOINT" ]; then \
@@ -56,6 +58,8 @@ RUN sed -i '$isource /etc/fsl/fsl.sh' $RWB_ENTRYPOINT
 #---------------------
 # NeuroDebian Packages
 #---------------------
+USER root
+
 RUN DEBIAN_FRONTEND=noninteractive apt-get update -qq \
     && apt-get install -y -q --no-install-recommends convert3d \
                                                      ants \
@@ -68,6 +72,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update -qq \
 #--------------
 # Misc Packages
 #--------------
+USER root
+
 RUN apt-get update -qq \
     && apt-get install -y -q --no-install-recommends tree \
                                                      vim \
@@ -78,6 +84,7 @@ RUN apt-get update -qq \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 #-----------------------
 # Create new user: neuro
@@ -145,9 +152,9 @@ RUN conda install   nipype \
 RUN conda clean --all
 
 
-#-----------------------------------------
-# Set Directory Structure and Permissions:
-#-----------------------------------------
+#----------------------------------------
+# Set Directory Structure and Permissions
+#----------------------------------------
 USER root
 
 RUN chmod -R 777 /etc/fsl
@@ -163,6 +170,7 @@ RUN mkdir -p /code/scripts \
 RUN mkdir -p /app \
     && chmod -R 777 /app
 
+
 #----------------------------------------
 # Add ANTS directory to PATH and ANTSPATH
 # Switch to user neuro
@@ -172,11 +180,13 @@ USER neuro
 ENV PATH=$PATH:/usr/lib/ants/
 ENV ANTSPATH=/usr/lib/ants/
 
+
 #--------------------------------------
 # Make bash the default shell for neuro
 #--------------------------------------
 USER root
 RUN chsh -s /bin/bash neuro
+
 
 #----------------------------------
 # Define ROOT password: FOR TESTING
@@ -184,13 +194,6 @@ RUN chsh -s /bin/bash neuro
 USER root
 RUN echo "root:Docker!" | chpasswd
 
-#----------------------------
-# RWB Specific:
-# Add scripts to final image:
-#----------------------------
-USER root
-RUN mkdir -p /code
-RUN chmod 777 -R /code
 
 #---------------------
 # Login as user: neuro
@@ -198,6 +201,3 @@ RUN chmod 777 -R /code
 USER neuro
 ENV ls='ls -lh --color=auto'
 WORKDIR /home/neuro
-
-USER root
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
