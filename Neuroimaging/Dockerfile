@@ -89,7 +89,7 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 #-----------------------
 # Create new user: neuro
 #-----------------------
-RUN useradd --no-user-group --create-home --shell /bin/bash neuro
+RUN useradd --no-log-init --no-user-group --create-home --shell /bin/bash neuro
 USER neuro
 
 ENV PROFILE='/home/neuro/.profile'
