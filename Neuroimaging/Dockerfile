@@ -3,6 +3,7 @@
 
 FROM ubuntu:18.04
 
+
 #----------------------------
 # Install common dependencies
 #----------------------------
@@ -16,6 +17,7 @@ RUN apt-get update -qq && apt-get install -yq --no-install-recommends \
     && chmod 777 /opt && chmod a+s /opt \
     && chmod -R 777 /home && chmod a+s /home \
     && apt-get update -qq
+
 
 #----------------------------------------------------------
 # NeuroDebian Keys
@@ -44,16 +46,17 @@ RUN sed -i -e 's,main *$,main contrib non-free,g' /etc/apt/sources.list.d/neurod
 #--------------------------
 USER root
 
-ENV RWB_ENTRYPOINT="/home/startup.sh"
+ENV ENTRYPOINT="/home/startup.sh"
 
-RUN if [ ! -f "$RWB_ENTRYPOINT" ]; then \
-    echo '#!/usr/bin/env bash' >> $RWB_ENTRYPOINT \
-    && echo 'set +x' >> $RWB_ENTRYPOINT \
-    && echo 'if [ -z "$*" ]; then /usr/bin/env bash; else $*; fi' >> $RWB_ENTRYPOINT; \
+RUN if [ ! -f "$ENTRYPOINT" ]; then \
+    echo '#!/usr/bin/env bash' >> $ENTRYPOINT \
+    && echo 'set +x' >> $ENTRYPOINT \
+    && echo 'if [ -z "$*" ]; then /usr/bin/env bash; else $*; fi' >> $ENTRYPOINT; \
     fi
 
 ENTRYPOINT ["/home/startup.sh"]
-RUN sed -i '$isource /etc/fsl/fsl.sh' $RWB_ENTRYPOINT
+RUN sed -i '$isource /etc/fsl/fsl.sh' $ENTRYPOINT
+
 
 #---------------------
 # NeuroDebian Packages
@@ -84,7 +87,6 @@ RUN apt-get update -qq \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 #-----------------------
 # Create new user: neuro
@@ -116,9 +118,9 @@ RUN echo "Downloading Miniconda installer ..." \
     && sync
 
 
-#------------------
-# Conda/Pip Install
-#------------------
+#-----------------------
+# Conda Install Packages
+#-----------------------
 USER root
 
 RUN conda install -y pytest \
@@ -152,6 +154,43 @@ RUN conda install   nipype \
 RUN conda clean --all
 
 
+#-------------------
+# Freesurfer Install
+# https://surfer.nmr.mgh.harvard.edu/fswiki/DownloadAndInstall
+# Obtain individual liscence: 
+# https://surfer.nmr.mgh.harvard.edu/registration.html
+#-------------------
+USER root
+
+# Install freeview dependencies:
+RUN apt-get update -qq \
+    && apt-get install -y -q --no-install-recommends wget \
+                                                    xz-utils \
+                                                    libglu1 \
+                                                    libjpeg62 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+RUN wget -q -O /tmp/libpng12.deb http://mirrors.kernel.org/ubuntu/pool/main/libp/libpng/libpng12-0_1.2.54-1ubuntu1_amd64.deb \
+  && dpkg -i /tmp/libpng12.deb \
+  && rm /tmp/libpng12.deb
+
+# Freesurfer:
+RUN wget https://surfer.nmr.mgh.harvard.edu/pub/dist/freesurfer/6.0.0/freesurfer-Linux-centos6_x86_64-stable-pub-v6.0.0.tar.gz
+RUN tar -C /usr/local -xzvf freesurfer-Linux-centos6_x86_64-stable-pub-v6.0.0.tar.gz # && rm freesurfer-Linux-centos6_x86_64-stable-pub-v6.0.0.tar.gz
+
+RUN sed -i '$iexport FREESURFER_HOME=/usr/local/freesurfer' $ENTRYPOINT
+RUN sed -i '$isource $FREESURFER_HOME/SetUpFreeSurfer.sh' $ENTRYPOINT
+
+
+# Tutorial data: ~8GB
+# http://surfer.nmr.mgh.harvard.edu/fswiki/FsTutorial/Data
+#RUN curl https://surfer.nmr.mgh.harvard.edu/pub/data/tutorial_data.tar.gz -o tutorial_data.tar.gz
+#RUN tar -xzvf tutorial_data.tar.gz
+#RUN rm tutorial_data.tar.gz
+#ENV TUTORIAL_DATA=/path/to/your/tutorial/dir
+
+
 #----------------------------------------
 # Set Directory Structure and Permissions
 #----------------------------------------
@@ -173,7 +212,6 @@ RUN mkdir -p /app \
 
 #----------------------------------------
 # Add ANTS directory to PATH and ANTSPATH
-# Switch to user neuro
 #----------------------------------------
 USER neuro
 
@@ -199,5 +237,4 @@ RUN echo "root:Docker!" | chpasswd
 # Login as user: neuro
 #---------------------
 USER neuro
-ENV ls='ls -lh --color=auto'
 WORKDIR /home/neuro
