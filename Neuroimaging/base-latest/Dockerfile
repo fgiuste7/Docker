@@ -186,6 +186,11 @@ ENV PATH=$PATH:/usr/lib/ants/
 ENV ANTSPATH=/usr/lib/ants/
 
 
+#----------
+# For Xauth
+#----------
+RUN touch /home/neuro/.Xauthority
+
 #--------------------------------------
 # Make bash the default shell for neuro
 #--------------------------------------
