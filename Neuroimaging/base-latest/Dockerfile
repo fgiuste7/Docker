@@ -86,6 +86,8 @@ RUN apt-get update -qq \
                                                      nano \
                                                      ncdu \
                                                      graphviz \
+                                                     xauth \
+                                                     xterm \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
