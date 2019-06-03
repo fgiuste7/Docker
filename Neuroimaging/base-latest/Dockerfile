@@ -51,10 +51,8 @@ USER root
 ENTRYPOINT ["/home/startup.sh"]
 ENV ENTRYPOINT="/home/startup.sh"
 
-RUN if [ ! -f "$ENTRYPOINT" ]; then \
-    echo '#!/usr/bin/env bash' >> $ENTRYPOINT \
-    && echo 'set +x' >> $ENTRYPOINT \
-    ; fi
+RUN echo '#!/usr/bin/env bash' >> $ENTRYPOINT \
+    && echo 'set +x' >> $ENTRYPOINT
 
 
 #---------------------
