@@ -48,13 +48,12 @@ RUN sed -i -e 's,main *$,main contrib non-free,g' /etc/apt/sources.list.d/neurod
 #--------------------------
 USER root
 
-ENTRYPOINT ["/home/startup.sh"]
+ENTRYPOINT ["source","/home/startup.sh"]
 ENV ENTRYPOINT="/home/startup.sh"
 
 RUN if [ ! -f "$ENTRYPOINT" ]; then \
     echo '#!/usr/bin/env bash' >> $ENTRYPOINT \
     && echo 'set +x' >> $ENTRYPOINT \
-    && echo 'if [ -z "$*" ]; then /usr/bin/env bash; else $*; fi' >> $ENTRYPOINT; \
     fi
 
 
@@ -186,7 +185,6 @@ RUN echo "source /etc/fsl/fsl.sh" >> $ENTRYPOINT
 # Add ANTS directory to PATH and ANTSPATH
 #----------------------------------------
 USER neuro
-
 ENV PATH=$PATH:/usr/lib/ants/
 ENV ANTSPATH=/usr/lib/ants/
 
