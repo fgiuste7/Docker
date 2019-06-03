@@ -97,7 +97,6 @@ USER neuro
 ENV PROFILE='/home/neuro/.profile'
 RUN echo "alias ls='ls -lha --color=auto' " >> $PROFILE
 RUN echo "alias rm='rm -i' " >> $PROFILE
-ENV PROFILE='/home/neuro/.profile'
 
 
 #---------------------------
@@ -180,7 +179,7 @@ RUN conda clean --all
 # Setup FSL
 #----------
 USER neuro
-RUN echo "source /etc/fsl/fsl.sh" >> $PROFILE
+RUN echo "source /etc/fsl/fsl.sh" >> $ENTRYPOINT
 
 
 #----------------------------------------
