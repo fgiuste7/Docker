@@ -15,6 +15,6 @@ firefox
 # Neuroimaging:
 docker run -it --rm --net=host -e "DISPLAY" fgiuste/neuroimaging:freesurfer
 touch .Xauthority
-xauth add $DISPLAY . 5ab8e1ab40c6572a4d74f9fe292ccb0a # need to get from xauth list $DISPLAY on host
+xauth add $DISPLAY . 98add7d652a193d1bfa8cad7e830694e # need to get from xauth list $DISPLAY on host
 xauth list $DISPLAY
 firefox

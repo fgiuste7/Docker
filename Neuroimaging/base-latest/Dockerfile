@@ -177,6 +177,7 @@ RUN conda clean --all
 #----------
 USER neuro
 RUN echo "source /etc/fsl/fsl.sh" >> $ENTRYPOINT
+RUN echo 'if [ -z "$*" ]; then /usr/bin/env bash; else $*; fi' >> $ND_ENTRYPOINT;
 
 
 #----------------------------------------
