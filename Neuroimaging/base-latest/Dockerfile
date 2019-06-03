@@ -150,6 +150,8 @@ RUN chown neuro:users -R /opt/conda
 #-----------------------
 USER neuro
 
+RUN conda config --add channels conda-forge 
+
 RUN conda install -y pytest \
                      traits \
                      pandas \
@@ -169,7 +171,6 @@ RUN conda install -y pytest \
                      zarr \
     && sync
 
-RUN conda config --add channels conda-forge 
 RUN conda install -c aramislab pybids
 RUN conda install   nipype \
                     nilearn \
