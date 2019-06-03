@@ -190,8 +190,6 @@ USER neuro
 
 ENV PATH=$PATH:/usr/lib/ants/
 ENV ANTSPATH=/usr/lib/ants/
-RUN echo "export PATH=$PATH:/usr/lib/ants/" >> $PROFILE
-RUN echo "export ANTSPATH=/usr/lib/ants/" >> $PROFILE
 
 
 #----------
