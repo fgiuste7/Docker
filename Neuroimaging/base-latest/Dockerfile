@@ -48,6 +48,7 @@ RUN sed -i -e 's,main *$,main contrib non-free,g' /etc/apt/sources.list.d/neurod
 #--------------------------
 USER root
 
+ENTRYPOINT ["/home/startup.sh"]
 ENV ENTRYPOINT="/home/startup.sh"
 
 RUN if [ ! -f "$ENTRYPOINT" ]; then \
@@ -65,14 +66,9 @@ USER root
 RUN DEBIAN_FRONTEND=noninteractive apt-get update -qq \
     && apt-get install -y -q --no-install-recommends convert3d \
                                                      ants \
-                                                     fsl \
-                                                     fsl-atlases \
+                                                     fsl-complete \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-# FSL setup at ENTRYPOINT:
-ENTRYPOINT ["/home/startup.sh"]
-RUN sed -i '$isource /etc/fsl/fsl.sh' $ENTRYPOINT
 
 
 #--------------
@@ -103,23 +99,18 @@ RUN echo "alias ls='ls -lha --color=auto' " >> $PROFILE
 RUN echo "alias rm='rm -i' " >> $PROFILE
 ENV PROFILE='/home/neuro/.profile'
 
-# For FSL:
-RUN echo "source /etc/fsl/fsl.sh" >> $PROFILE
-
 
 #---------------------------
 # Install Miniconda3: 4.6.14
 #---------------------------
 USER neuro
 
-ENV CONDA_DIR=/opt/conda \
-    PATH=/opt/conda/bin:$PATH
-RUN echo "Downloading Miniconda installer ..." \
-    && miniconda_installer=/tmp/miniconda.sh \
+ENV CONDA_DIR=/opt/conda
+ENV PATH=/opt/conda/bin:$PATH
+RUN miniconda_installer=/tmp/miniconda.sh \
     && curl -sSL --retry 5 -o $miniconda_installer https://repo.continuum.io/miniconda/Miniconda3-4.6.14-Linux-x86_64.sh \
     && /bin/bash $miniconda_installer -b -p $CONDA_DIR \
     && rm -f $miniconda_installer \
-    && conda config --system --prepend channels conda-forge \
     && conda config --system --set auto_update_conda false \
     && conda config --system --set show_channel_urls true \
     && sync
@@ -185,6 +176,13 @@ RUN conda install   nipype \
 RUN conda clean --all
 
 
+#----------
+# Setup FSL
+#----------
+USER neuro
+RUN echo "source /etc/fsl/fsl.sh" >> $PROFILE
+
+
 #----------------------------------------
 # Add ANTS directory to PATH and ANTSPATH
 #----------------------------------------
@@ -192,6 +190,8 @@ USER neuro
 
 ENV PATH=$PATH:/usr/lib/ants/
 ENV ANTSPATH=/usr/lib/ants/
+RUN echo "export PATH=$PATH:/usr/lib/ants/" >> $PROFILE
+RUN echo "export ANTSPATH=/usr/lib/ants/" >> $PROFILE
 
 
 #----------
