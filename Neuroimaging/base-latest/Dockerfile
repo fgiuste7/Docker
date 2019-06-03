@@ -48,13 +48,13 @@ RUN sed -i -e 's,main *$,main contrib non-free,g' /etc/apt/sources.list.d/neurod
 #--------------------------
 USER root
 
-ENTRYPOINT ["source","/home/startup.sh"]
+ENTRYPOINT ["/home/startup.sh"]
 ENV ENTRYPOINT="/home/startup.sh"
 
 RUN if [ ! -f "$ENTRYPOINT" ]; then \
     echo '#!/usr/bin/env bash' >> $ENTRYPOINT \
     && echo 'set +x' >> $ENTRYPOINT \
-    fi
+    ; fi
 
 
 #---------------------
