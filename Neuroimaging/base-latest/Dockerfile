@@ -56,9 +56,6 @@ RUN if [ ! -f "$ENTRYPOINT" ]; then \
     && echo 'if [ -z "$*" ]; then /usr/bin/env bash; else $*; fi' >> $ENTRYPOINT; \
     fi
 
-ENTRYPOINT ["/home/startup.sh"]
-RUN sed -i '$isource /etc/fsl/fsl.sh' $ENTRYPOINT
-
 
 #---------------------
 # NeuroDebian Packages
@@ -72,6 +69,10 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update -qq \
                                                      fsl-atlases \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# FSL setup at ENTRYPOINT:
+ENTRYPOINT ["/home/startup.sh"]
+RUN sed -i '$isource /etc/fsl/fsl.sh' $ENTRYPOINT
 
 
 #--------------
