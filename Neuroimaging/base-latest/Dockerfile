@@ -98,7 +98,8 @@ RUN apt-get update -qq \
 #-----------------------
 RUN useradd --no-log-init --no-user-group --create-home --shell /bin/bash neuro
 USER neuro
-RUN echo "alias ls='ls -lha --color=auto' " > $PROFILE
+ENV PROFILE='/home/neuro/.profile'
+RUN echo "alias ls='ls -lha --color=auto' " >> $PROFILE
 RUN echo "alias rm='rm -i' " >> $PROFILE
 ENV PROFILE='/home/neuro/.profile'
 
