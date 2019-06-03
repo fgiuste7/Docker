@@ -13,8 +13,11 @@ firefox
 
 
 # Neuroimaging:
+# Get correct xauth hostkey before running:
+xauthhostkey=`xauth list $DISPLAY | cut -d' ' -f 5`
+echo ${xauthhostkey}
+
 docker run -it --rm --net=host -e "DISPLAY" fgiuste/neuroimaging:freesurfer
-touch .Xauthority
 xauth add $DISPLAY . 98add7d652a193d1bfa8cad7e830694e # need to get from xauth list $DISPLAY on host
 xauth list $DISPLAY
-firefox
+freeview
