@@ -103,7 +103,7 @@ RUN echo "alias rm='rm -i' " >> $PROFILE
 ENV PROFILE='/home/neuro/.profile'
 
 # For FSL:
-RUN echo "$isource /etc/fsl/fsl.sh" >> $PROFILE
+RUN echo "source /etc/fsl/fsl.sh" >> $PROFILE
 
 
 #---------------------------
