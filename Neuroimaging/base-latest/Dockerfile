@@ -97,11 +97,12 @@ RUN apt-get update -qq \
 #-----------------------
 RUN useradd --no-log-init --no-user-group --create-home --shell /bin/bash neuro
 USER neuro
-
-ENV PROFILE='/home/neuro/.profile'
-RUN echo "$isource /etc/fsl/fsl.sh" >> $PROFILE
 RUN echo "alias ls='ls -lha --color=auto' " >> $PROFILE
 RUN echo "alias rm='rm -i' " >> $PROFILE
+ENV PROFILE='/home/neuro/.profile'
+
+# For FSL:
+RUN echo "$isource /etc/fsl/fsl.sh" >> $PROFILE
 
 
 #---------------------------
@@ -122,10 +123,32 @@ RUN echo "Downloading Miniconda installer ..." \
     && sync
 
 
+#----------------------------------------
+# Set Directory Structure and Permissions
+#----------------------------------------
+USER root
+
+RUN chmod -R 777 /etc/fsl
+RUN chmod -R 777 /home/neuro
+RUN mkdir /data && chmod -R 777 /data
+RUN mkdir /output && chmod -R 777 /output
+RUN chmod 777 /home/startup.sh
+
+RUN mkdir -p /code/scripts \
+    && mkdir -p /code/notebooks \
+    && chmod -R 777 /code
+
+RUN mkdir -p /app \
+    && chmod -R 777 /app
+
+# Conda root:
+RUN chown neuro:users -R /opt/conda
+
+
 #-----------------------
 # Conda Install Packages
 #-----------------------
-USER root
+USER neuro
 
 RUN conda install -y pytest \
                      traits \
@@ -152,29 +175,11 @@ RUN conda install   nipype \
                     nilearn \
                     datalad[full] \
                     nipy \
-                    dask=0.18.1 \
+                    dask \
+                    fsleyes \
     && sync
     
 RUN conda clean --all
-
-
-#----------------------------------------
-# Set Directory Structure and Permissions
-#----------------------------------------
-USER root
-
-RUN chmod -R 777 /etc/fsl
-RUN chmod -R 777 /home/neuro
-RUN mkdir /data && chmod -R 777 /data
-RUN mkdir /output && chmod -R 777 /output
-RUN chmod 777 /home/startup.sh
-
-RUN mkdir -p /code/scripts \
-    && mkdir -p /code/notebooks \
-    && chmod -R 777 /code
-
-RUN mkdir -p /app \
-    && chmod -R 777 /app
 
 
 #----------------------------------------
@@ -189,13 +194,8 @@ ENV ANTSPATH=/usr/lib/ants/
 #----------
 # For Xauth
 #----------
+USER neuro
 RUN touch /home/neuro/.Xauthority
-
-#--------------------------------------
-# Make bash the default shell for neuro
-#--------------------------------------
-USER root
-RUN chsh -s /bin/bash neuro
 
 
 #----------------------------------
