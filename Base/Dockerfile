@@ -1,7 +1,7 @@
 # 6/04/2019 (FG)
 # Felipe Giuste
 # Base Image
-# fgiuste/base
+# fgiuste/base:base
 
 FROM ubuntu:18.04
 

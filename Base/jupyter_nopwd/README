@@ -1,7 +1,0 @@
-Inherits fgiuste/base:base
-Jupyter notebook without predifined password
-
-docker build --no-cache --tag fgiuste/jupyter:nopswd .
-
-port=8777
-docker run -it --rm -p${port}:8888 --name jupyter_nopswd fgiuste/jupyter:nopswd

@@ -1,0 +1,7 @@
+Inherits fgiuste/base:base
+Jupyter notebook with token-protected login
+
+docker build --tag fgiuste/base:jupyter_token .
+
+port=8777
+docker run -it --rm -p${port}:8888 --name jupyter_token fgiuste/base:jupyter_token
