@@ -13,14 +13,14 @@ USER mainuser
 RUN conda config --add channels conda-forge 
 RUN conda config --add channels anaconda
 
-RUN conda install -y dask \
-                     zarr \
-                     ipywidgets
+RUN conda install   dask \
+                    zarr \
+                    ipywidgets
 
 #---------------------
 # Pip Install Packages
 #---------------------
-RUN pip install -yq dash==0.43.0 \
+RUN pip install     dash==0.43.0 \
                     dash-daq==0.1.0
 
 #------------------
