@@ -20,7 +20,8 @@ RUN conda install   dask \
 #---------------------
 # Pip Install Packages
 #---------------------
-RUN pip install     dash==0.43.0 \
+RUN pip install     plotly \
+                    dash==0.43.0 \
                     dash-daq==0.1.0
 
 #------------------
