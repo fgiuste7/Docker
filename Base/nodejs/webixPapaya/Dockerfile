@@ -13,7 +13,7 @@ FROM fgiuste/base:nodejs
 # install git
 #------------
 USER root
-RUN apt-get update && apt-get install -y git-all
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y git-all
 
 #---------------------------
 # Add scripts to final image
