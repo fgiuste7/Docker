@@ -25,6 +25,8 @@ RUN apt-get update -qq && apt-get install -yq --no-install-recommends \
     tree \
     bzip2 \
     wget \
+    xauth \
+    xterm \
     && apt-get update -qq \
     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
     && localedef --force --inputfile=en_US --charmap=UTF-8 C.UTF-8 
