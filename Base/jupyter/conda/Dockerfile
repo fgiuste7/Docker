@@ -12,6 +12,13 @@ USER root
 RUN mkdir -m777  /env
 
 
+#---------------------
+# initialize conda env
+#---------------------
+USER mainuser
+RUN conda init bash
+
+
 #-----------------
 # Setup ENTRYPOINT
 #-----------------
