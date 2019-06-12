@@ -4,7 +4,7 @@
 #--------------
 # OS: Ubuntu 18
 #--------------
-FROM fgiuste/base:jupyter
+FROM fgiuste/base:jupyter_token
 
 
 #--------------

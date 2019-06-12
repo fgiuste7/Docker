@@ -3,7 +3,7 @@
 #--------------
 # OS: Ubuntu 18
 #--------------
-FROM fgiuste/base:jupyter_token
+FROM fgiuste/base:jupyter
 
 #--------------------------------------------
 # Create Directory for conda requirements.txt
