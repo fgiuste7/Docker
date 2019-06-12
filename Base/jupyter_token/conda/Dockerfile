@@ -12,11 +12,15 @@ USER root
 RUN mkdir -m777  /env
 
 
-#--------------------------------------------
-# Create Directory for conda requirements.txt
-#--------------------------------------------
-USER mainuser
-CMD [ "conda", "create", "--name", "myenv", "--file", "/env/requirements.txt" ]
+#-----------------
+# Setup ENTRYPOINT
+#-----------------
+USER root
+RUN echo '#!/usr/bin/env bash' >> $ENTRYPOINT \
+    && echo 'set +x' >> $ENTRYPOINT \
+    && echo 'conda create --name myenv --file /env/requirements.txt' >> $ENTRYPOINT \
+    && echo "conda activate myenv" >> $ENTRYPOINT \
+    && echo 'if [ -z "$*" ]; then /usr/bin/env bash; else $*; fi' >> $ENTRYPOINT
 
 
 #------------------------

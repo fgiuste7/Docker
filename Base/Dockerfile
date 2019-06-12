@@ -5,12 +5,14 @@
 
 FROM ubuntu:18.04
 
+
 #--------------------------------------------
 # Install common dependencies (+screen +tree)
 #--------------------------------------------
 USER root
 ENV LANG="en_US.UTF-8" \
     LC_ALL="C.UTF-8"
+
 
 RUN apt-get update -qq && apt-get install -yq --no-install-recommends \
     apt-utils \
@@ -31,6 +33,7 @@ RUN apt-get update -qq && apt-get install -yq --no-install-recommends \
     && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
     && localedef --force --inputfile=en_US --charmap=UTF-8 C.UTF-8 
 
+
 #----------------------------------------
 # Install Text Editors (+vim +nano +less)
 #----------------------------------------
@@ -43,6 +46,7 @@ RUN apt-get update -qq \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+
 #--------------------------
 # Create new user: mainuser
 #--------------------------
@@ -50,14 +54,14 @@ USER root
 ENV USR_HOME="/home/mainuser"
 RUN useradd --no-user-group --create-home --shell /bin/bash mainuser
 
+
 #------------------------------
 # Create mainuser .bash_aliases
 #------------------------------
 USER mainuser
-ENV BASHRC="/home/mainuser/.bash_aliases"
-WORKDIR /home/mainuser
-RUN echo '#!/usr/bin/env bash' >> $BASHRC \
-    echo "alias ls='ls -lh --color=auto'" >> $BASHRC
+ENV PROFILE="/home/mainuser/.profile"
+RUN echo "alias ls='ls -lh --color=auto'" >> $PROFILE
+
 
 #--------------------------
 # Create Default Entrypoint
@@ -71,6 +75,7 @@ RUN echo '#!/usr/bin/env bash' >> $ENTRYPOINT \
     && echo 'if [ -z "$*" ]; then /usr/bin/env bash; else $*; fi' >> $ENTRYPOINT
 
 ENTRYPOINT ["/home/startup.sh"]
+
 
 #----------------------------------------
 # Set Directory Structure and Permissions
@@ -92,7 +97,9 @@ RUN mkdir -p /code/scripts \
 USER root
 RUN echo "root:Docker!" | chpasswd
 
+
 #------------------
 # Login as mainuser
 #------------------
 USER mainuser
+WORKDIR /home/mainuser

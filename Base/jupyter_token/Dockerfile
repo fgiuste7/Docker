@@ -62,6 +62,13 @@ RUN mkdir -p /home/mainuser/.jupyter \
     && echo c.NotebookApp.ip = \"0.0.0.0\" > /home/mainuser/.jupyter/jupyter_notebook_config.py 
 
 
+#----------------------------
+# Jupyter-notebook at Startup
+#----------------------------
+USER mainuser
+CMD [ "jupyter-notebook", "--notebook-dir=/" ]
+
+
 #------------------
 # Login as mainuser
 #------------------
