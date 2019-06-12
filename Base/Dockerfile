@@ -74,7 +74,7 @@ RUN echo '#!/bin/bash' > $ENTRYPOINT \
     && echo 'exec "$@"' >> $ENTRYPOINT
 
 ENTRYPOINT ["/home/startup.sh"]
-CMD ["/bin/bash", "-c"]
+CMD ["/bin/bash"]
 
 
 #----------------------------------------
