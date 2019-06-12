@@ -37,7 +37,8 @@ USER root
 RUN echo '#!/bin/bash' > $ENTRYPOINT \
     && echo 'set +x' >> $ENTRYPOINT \
     && echo 'source /home/mainuser/.bashrc' >> $ENTRYPOINT \
-    && echo 'exec /home/mainuser/envcreate.sh' >> $ENTRYPOINT
+    && echo 'exec "$@"' >> $ENTRYPOINT
+    #&& echo 'exec /home/mainuser/envcreate.sh' >> $ENTRYPOINT
 
 CMD ["/bin/bash"]
 
