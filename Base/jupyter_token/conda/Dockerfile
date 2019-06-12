@@ -31,13 +31,12 @@ RUN echo 'conda create -y --name myenv --file /env/requirements.txt' >> $BASHRC 
 #-----------------
 # Setup ENTRYPOINT
 #-----------------
-USER root
-RUN echo '#!/bin/bash' > $ENTRYPOINT \
-    && echo 'set +x' >> $ENTRYPOINT \
-    && echo 'exec "$@"' >> $ENTRYPOINT
-    #&& echo 'source /home/mainuser/.bashrc' >> $ENTRYPOINT
+# USER root
+# RUN echo '#!/bin/bash' > $ENTRYPOINT \
+#     && echo 'set +x' >> $ENTRYPOINT \
+#     && echo 'exec "$@"' >> $ENTRYPOINT
 
-CMD ["/bin/bash"]
+# CMD ["/bin/bash"]
 
 
 #------------------------
