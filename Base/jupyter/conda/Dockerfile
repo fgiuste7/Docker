@@ -25,7 +25,7 @@ RUN conda init bash && exec /home/mainuser/.bashrc
 USER root
 RUN echo '#!/bin/bash' > $ENTRYPOINT \
     && echo 'set +x' >> $ENTRYPOINT \
-    && echo 'source "$@"' >> $ENTRYPOINT
+    && echo 'source /home/mainuser/.bashrc' >> $ENTRYPOINT
     #&& echo 'conda create -y --name myenv --file /env/requirements.txt' >> $ENTRYPOINT \
     #&& echo "conda activate myenv" >> $ENTRYPOINT \
     #&& echo 'source "$@"' >> $ENTRYPOINT
