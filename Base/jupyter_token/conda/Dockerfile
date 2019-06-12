@@ -24,9 +24,12 @@ RUN conda init bash
 #-----------------
 USER root
 ENV BASHRC /home/mainuser/.bashrc
-#RUN echo 'conda create -y --name myenv --file /env/requirements.txt;' >> $BASHRC \
-#    && echo "conda activate myenv;" >> $BASHRC
-RUN echo 'pip install -r /env/requirements.txt' >> $BASHRC
+
+RUN echo '#!/bin/bash' > $ENTRYPOINT \
+    && echo 'set +x' >> $ENTRYPOINT \
+    && echo 'pip install -r /env/requirements.txt' >> $ENTRYPOINT \
+    && echo 'exec "$@"' >> $ENTRYPOINT
+
 
 #------------------------
 # Login as user: mainuser
