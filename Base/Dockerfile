@@ -59,8 +59,8 @@ RUN useradd --no-user-group --create-home --shell /bin/bash mainuser
 # Create mainuser .bash_aliases
 #------------------------------
 USER mainuser
-ENV PROFILE="/home/mainuser/.profile"
-RUN echo "alias ls='ls -lh --color=auto'" >> $PROFILE
+ENV PROFILE="/home/mainuser/.bash_aliases"
+RUN echo "export alias ls='ls -lh --color=auto'" >> $PROFILE
 
 
 #--------------------------
