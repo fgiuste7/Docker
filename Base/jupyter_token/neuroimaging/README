@@ -1,7 +1,6 @@
-Inherits fgiuste/base:base
-Neuro container FROM:Jupyter notebook without predifined password
+Inherits fgiuste/base:jupyter_token
 
-docker build --no-cache --tag fgiuste/neuro:nopswd .
+docker build --no-cache --tag fgiuste/base:neuroimaging .
 
 port=8777
-docker run -it --rm -p${port}:8888 --name jupyter_nopswd fgiuste/neuro:nopswd
+docker run -it --rm -p${port}:8888 --name jupyter_nopswd fgiuste/base:neuroimaging
