@@ -19,9 +19,9 @@ USER mainuser
 RUN conda init bash
 
 
-#-----------------
-# Create conda env
-#-----------------
+#--------------------
+# Python requirements
+#--------------------
 USER root
 ENV BASHRC /home/mainuser/.bashrc
 
