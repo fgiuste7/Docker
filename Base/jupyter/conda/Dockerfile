@@ -20,7 +20,7 @@ RUN echo '#!/usr/bin/env bash' >> $ENTRYPOINT \
     && echo 'set +x' >> $ENTRYPOINT \
     && echo 'conda create --name myenv --file /env/requirements.txt' >> $ENTRYPOINT \
     && echo "conda activate myenv" >> $ENTRYPOINT \
-    && echo 'if [ -z "$*" ]; then /usr/bin/env bash; else $*; fi' >> $ENTRYPOINT
+    && echo 'exec "$@"' >> $ENTRYPOINT
 
 
 #------------------------
