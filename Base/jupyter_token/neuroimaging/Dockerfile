@@ -129,7 +129,7 @@ USER root
 RUN echo '#!/usr/bin/env bash' > $ENTRYPOINT \
     && echo 'set +x' >> $ENTRYPOINT \
     && echo 'source /etc/fsl/fsl.sh' >> $ENTRYPOINT \
-    && echo 'exec "$@"' >> $ENTRYPOINT
+    && echo 'source "$@"' >> $ENTRYPOINT
 
 
 #------------------------
