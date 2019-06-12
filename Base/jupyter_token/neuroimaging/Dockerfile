@@ -126,7 +126,7 @@ RUN touch /home/mainuser/.Xauthority
 #---------------------
 USER root
 
-RUN echo '#!/usr/bin/env bash' > $ENTRYPOINT \
+RUN echo '#!/bin/bash' > $ENTRYPOINT \
     && echo 'set +x' >> $ENTRYPOINT \
     && echo 'source /etc/fsl/fsl.sh' >> $ENTRYPOINT \
     && echo 'source "$@"' >> $ENTRYPOINT
