@@ -37,6 +37,8 @@ RUN apt-get update -qq \
 # Neurodebian:
 # https://github.com/neurodebian/dockerfiles/blob/88af27888a5aee76924c3b6840fc47f9cd8f63cb/dockerfiles/xenial-non-free/Dockerfile
 #----------------------------------------------------------
+USER root
+
 RUN set -x \
     && export GNUPGHOME="$(mktemp -d)" \
     && gpg --keyserver ha.pool.sks-keyservers.net --recv-keys DD95CC430502E37EF840ACEEA5D32F012649A5A9 \
@@ -73,17 +75,17 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update -qq \
 USER root
 
 RUN chmod -R 777 /etc/fsl
-RUN chmod -R 777 /home/neuro
+RUN chmod -R 777 /home/mainuser
 RUN chmod 777 /home/startup.sh
 
 # Conda root:
-RUN chown neuro:users -R /opt/conda
+RUN chown mainuser:users -R /opt/conda
 
 
 #-----------------------
 # Conda Install Packages
 #-----------------------
-USER neuro
+USER mainuser
 
 RUN conda install -y pytest \
                      traits \
@@ -119,7 +121,7 @@ RUN conda clean --all
 #----------------------------------------
 # Add ANTS directory to PATH and ANTSPATH
 #----------------------------------------
-USER neuro
+USER mainuser
 ENV PATH=$PATH:/usr/lib/ants/
 ENV ANTSPATH=/usr/lib/ants/
 
@@ -127,8 +129,8 @@ ENV ANTSPATH=/usr/lib/ants/
 #----------
 # For Xauth
 #----------
-USER neuro
-RUN touch /home/neuro/.Xauthority
+USER mainuser
+RUN touch /home/mainuser/.Xauthority
 
 
 #---------------------
@@ -145,5 +147,5 @@ RUN echo '#!/usr/bin/env bash' >> $ENTRYPOINT \
 #---------------------
 # Login as user: neuro
 #---------------------
-USER neuro
-WORKDIR /home/neuro
+USER mainuser
+WORKDIR /home/mainuser
