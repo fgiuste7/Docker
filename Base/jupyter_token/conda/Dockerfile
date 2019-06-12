@@ -3,7 +3,7 @@
 #--------------
 # OS: Ubuntu 18
 #--------------
-FROM fgiuste/base:jupyter
+FROM fgiuste/base:jupyter_token
 
 #--------------------------------------------
 # Create Directory for conda requirements.txt
@@ -12,12 +12,20 @@ USER root
 RUN mkdir -m777  /env
 
 
-#---------------------
-# initialize conda env
-#---------------------
+#-----------------
+# Initialize conda
+#-----------------
 USER mainuser
 RUN conda init bash
 
+
+#-----------------
+# Create conda env
+#-----------------
+ENV ENVCREATE /home/mainuser/envcreate.sh
+RUN echo 'conda create -y --name myenv --file /env/requirements.txt' >> $ENVCREATE \
+    && echo "conda activate myenv" >> $ENVCREATE \
+    && echo 'exec "$@"' >> $ENVCREATE
 
 #-----------------
 # Setup ENTRYPOINT
@@ -26,10 +34,7 @@ USER root
 RUN echo '#!/bin/bash' > $ENTRYPOINT \
     && echo 'set +x' >> $ENTRYPOINT \
     && echo 'source /home/mainuser/.bashrc' >> $ENTRYPOINT \
-    && echo 'exec "$@"' >> $ENTRYPOINT
-#&& echo 'conda create -y --name myenv --file /env/requirements.txt' >> $ENTRYPOINT \
-#&& echo "conda activate myenv" >> $ENTRYPOINT 
-#&& echo 'exec "$@"' >> $ENTRYPOINT
+    && echo 'exec /home/mainuser/envcreate.sh' >> $ENTRYPOINT
 
 CMD ["/bin/bash"]
 
