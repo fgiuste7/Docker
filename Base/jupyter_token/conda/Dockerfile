@@ -16,7 +16,7 @@ RUN mkdir -m777  /env
 # Create Directory for conda requirements.txt
 #--------------------------------------------
 USER mainuser
-CMD [ "conda" "create" "--name" "myenv" "--file" "/env/requirements.txt" ]
+CMD [ "conda", "create", "--name", "myenv", "--file", "/env/requirements.txt" ]
 
 
 #------------------------
