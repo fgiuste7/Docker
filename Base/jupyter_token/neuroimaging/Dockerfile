@@ -132,8 +132,8 @@ RUN echo '#!/usr/bin/env bash' > $ENTRYPOINT \
     && echo 'if [ -z "$*" ]; then /usr/bin/env bash; else $*; fi' >> $ENTRYPOINT
 
 
-#---------------------
-# Login as user: neuro
-#---------------------
+#------------------------
+# Login as user: mainuser
+#------------------------
 USER mainuser
 WORKDIR /home/mainuser
