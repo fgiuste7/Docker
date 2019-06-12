@@ -1,6 +1,0 @@
-Inherits fgiuste/base:jupyter_token
-
-docker build --no-cache --tag fgiuste/base:neuroimaging .
-
-port=8777
-docker run -it --rm -p${port}:8888 --name jupyter_nopswd fgiuste/base:neuroimaging
