@@ -7,18 +7,6 @@
 FROM fgiuste/base:jupyter_token
 
 
-#--------------------------
-# Create Default Entrypoint
-#--------------------------
-USER root
-
-ENTRYPOINT ["/home/startup.sh"]
-ENV ENTRYPOINT="/home/startup.sh"
-
-RUN echo '#!/usr/bin/env bash' >> $ENTRYPOINT \
-    && echo 'set +x' >> $ENTRYPOINT
-
-
 #--------------
 # Misc Packages
 #--------------
@@ -138,7 +126,7 @@ RUN touch /home/mainuser/.Xauthority
 #---------------------
 USER root
 
-RUN echo '#!/usr/bin/env bash' >> $ENTRYPOINT \
+RUN echo '#!/usr/bin/env bash' > $ENTRYPOINT \
     && echo 'set +x' >> $ENTRYPOINT \
     && echo 'source /etc/fsl/fsl.sh' >> $ENTRYPOINT \
     && echo 'if [ -z "$*" ]; then /usr/bin/env bash; else $*; fi' >> $ENTRYPOINT
