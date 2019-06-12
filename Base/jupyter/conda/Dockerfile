@@ -18,9 +18,9 @@ RUN mkdir -m777  /env
 USER root
 RUN echo '#!/usr/bin/env bash' >> $ENTRYPOINT \
     && echo 'set +x' >> $ENTRYPOINT \
-    && echo 'conda create --name myenv --file /env/requirements.txt' >> $ENTRYPOINT \
+    && echo 'conda create -y --name myenv --file /env/requirements.txt' >> $ENTRYPOINT \
     && echo "conda activate myenv" >> $ENTRYPOINT \
-    && echo 'exec "$@"' >> $ENTRYPOINT
+    && echo 'source "$@"' >> $ENTRYPOINT
 
 
 #------------------------
