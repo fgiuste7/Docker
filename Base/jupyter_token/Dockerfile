@@ -7,6 +7,7 @@
 #----------------------------
 FROM fgiuste/base:base
 
+
 #----------------------------
 # Install Miniconda3: 4.6.14:
 #----------------------------
@@ -22,6 +23,7 @@ RUN echo "Downloading Miniconda installer ..." \
     && conda config --system --set auto_update_conda false \
     && conda config --system --set show_channel_urls true \
     && conda clean -tipsy && sync
+
 
 #---------------
 # Conda Install:
@@ -43,11 +45,13 @@ RUN conda install -y traits \
 
 RUN rm -rf /opt/conda/pkgs/*
 
+
 #-----------------------------
 # Allow mainuser conda install
 #-----------------------------
 USER root
 RUN chmod -R 777 /opt/conda
+
 
 #-----------------------
 # Jupyter Notebook setup
@@ -56,6 +60,7 @@ USER root
 # Set ip default to localhost:
 RUN mkdir -p /home/mainuser/.jupyter \
     && echo c.NotebookApp.ip = \"0.0.0.0\" > /home/mainuser/.jupyter/jupyter_notebook_config.py 
+
 
 #------------------
 # Login as mainuser
