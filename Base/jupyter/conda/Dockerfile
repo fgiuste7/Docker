@@ -16,7 +16,7 @@ RUN mkdir -m777  /env
 # Setup ENTRYPOINT
 #-----------------
 USER root
-RUN echo '#!/bin/bash' >> $ENTRYPOINT \
+RUN echo '#!/bin/bash' > $ENTRYPOINT \
     && echo 'set +x' >> $ENTRYPOINT \
     && echo 'conda create -y --name myenv --file /env/requirements.txt' >> $ENTRYPOINT \
     && echo "conda activate myenv" >> $ENTRYPOINT \
