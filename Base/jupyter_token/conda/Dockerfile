@@ -24,7 +24,8 @@ RUN conda init bash
 #-----------------
 USER root
 ENV ENVCREATE /home/mainuser/envcreate.sh
-RUN echo 'conda create -y --name myenv --file /env/requirements.txt' >> $ENVCREATE \
+RUN echo '#!/bin/bash' > $ENVCREATE \
+    && echo 'conda create -y --name myenv --file /env/requirements.txt' >> $ENVCREATE \
     && echo "conda activate myenv" >> $ENVCREATE \
     && echo 'exec "$@"' >> $ENVCREATE
 
@@ -37,8 +38,7 @@ USER root
 RUN echo '#!/bin/bash' > $ENTRYPOINT \
     && echo 'set +x' >> $ENTRYPOINT \
     && echo 'source /home/mainuser/.bashrc' >> $ENTRYPOINT \
-    && echo 'exec "$@"' >> $ENTRYPOINT
-    #&& echo 'exec /home/mainuser/envcreate.sh' >> $ENTRYPOINT
+    && echo '/bin/bash /home/mainuser/envcreate.sh' >> $ENTRYPOINT
 
 CMD ["/bin/bash"]
 
