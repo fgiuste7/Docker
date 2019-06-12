@@ -69,12 +69,12 @@ RUN echo "alias ls='ls -lh --color=auto'" >> $PROFILE
 USER root
 ENV ENTRYPOINT="/home/startup.sh"
 
-RUN echo '#!/usr/bin/env bash' >> $ENTRYPOINT \
+RUN echo '#!/bin/bash' > $ENTRYPOINT \
     && echo 'set +x' >> $ENTRYPOINT \
-    && echo 'if [ -f "/home/mainuser/.bash_aliases" ]; then source /home/mainuser/.bash_aliases; fi' >> $ENTRYPOINT \
-    && echo 'if [ -z "$*" ]; then /usr/bin/env bash; else $*; fi' >> $ENTRYPOINT
+    && echo 'exec "$@"' >> $ENTRYPOINT
 
 ENTRYPOINT ["/home/startup.sh"]
+CMD ["/bin/bash -c"]
 
 
 #----------------------------------------
