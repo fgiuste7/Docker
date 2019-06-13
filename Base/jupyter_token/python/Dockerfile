@@ -1,13 +1,13 @@
 # 6/12/2019 (FG)
-# fgiuste/base:conda
+# fgiuste/base:python
 #--------------
 # OS: Ubuntu 18
 #--------------
 FROM fgiuste/base:jupyter_token
 
-#--------------------------------------------
-# Create Directory for conda requirements.txt
-#--------------------------------------------
+#--------------------------------------
+# Create Directory for requirements.txt
+#--------------------------------------
 USER root
 RUN mkdir -m777  /env
 
