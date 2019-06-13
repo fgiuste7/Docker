@@ -5,6 +5,14 @@
 #--------------
 FROM fgiuste/base:jupyter_token
 
+
+#-----------------
+# Initialize conda
+#-----------------
+USER root
+RUN apt-get update && apt-get install -yqq build-essential
+
+
 #--------------------------------------
 # Create Directory for requirements.txt
 #--------------------------------------
@@ -29,6 +37,13 @@ RUN echo '#!/bin/bash' > $ENTRYPOINT \
     && echo 'set +x' >> $ENTRYPOINT \
     && echo 'pip install -r /env/requirements.txt' >> $ENTRYPOINT \
     && echo 'exec "$@"' >> $ENTRYPOINT
+
+
+#----------------------------------
+# Define ROOT password: FOR TESTING
+#----------------------------------
+USER root
+RUN echo "root:Docker!" | chpasswd
 
 
 #------------------------

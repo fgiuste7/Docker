@@ -1,0 +1,10 @@
+fgiuste/base:python
+
+# Creates python environment from requirements.txt file mounted in /env
+
+# Ex:
+dockerport=8777
+# only one requirements.txt
+pyenv="${HOME}/pythonEnvs"
+docker run -it --rm --name Dask -v ${pyenv}:/env/:rw -p ${dockerport}:8888 fgiuste/base:python
+
