@@ -20,7 +20,7 @@ git clone https://github.com/fgiuste7/Docker.git
 cd Monitoring
 
 # Using docker-compose:
-docker-compose -d -p monitor -f monitoring.yaml up
+docker-compose -p monitor -f monitoring.yaml up
 
 # Start single-node swarm to run Docker stack:
 docker swarm init
