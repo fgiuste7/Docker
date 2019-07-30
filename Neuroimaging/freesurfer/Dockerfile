@@ -29,7 +29,7 @@ RUN wget -q -O /tmp/libpng12.deb http://mirrors.kernel.org/ubuntu/pool/main/libp
 
 # Freesurfer:
 RUN wget https://surfer.nmr.mgh.harvard.edu/pub/dist/freesurfer/6.0.0/freesurfer-Linux-centos6_x86_64-stable-pub-v6.0.0.tar.gz
-RUN tar -C /usr/local -xzvf freesurfer-Linux-centos6_x86_64-stable-pub-v6.0.0.tar.gz # && rm freesurfer-Linux-centos6_x86_64-stable-pub-v6.0.0.tar.gz
+RUN tar -C /usr/local -xzvf freesurfer-Linux-centos6_x86_64-stable-pub-v6.0.0.tar.gz && rm freesurfer-Linux-centos6_x86_64-stable-pub-v6.0.0.tar.gz
 
 RUN sed -i '$iexport FREESURFER_HOME=/usr/local/freesurfer' $ENTRYPOINT
 RUN sed -i '$isource $FREESURFER_HOME/SetUpFreeSurfer.sh' $ENTRYPOINT
