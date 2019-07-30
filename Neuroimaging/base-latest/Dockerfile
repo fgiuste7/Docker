@@ -90,10 +90,6 @@ RUN apt-get update -qq \
 # Create new user: neuro
 #-----------------------
 RUN useradd --no-log-init --no-user-group --create-home --shell /bin/bash neuro
-USER neuro
-ENV PROFILE='/home/neuro/.profile'
-RUN echo "alias ls='ls -lha --color=auto' " >> $PROFILE
-RUN echo "alias rm='rm -i' " >> $PROFILE
 
 
 #---------------------------
