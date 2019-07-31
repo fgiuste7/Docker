@@ -9,7 +9,7 @@ FROM fgiuste/base:neuroimaging
 #-------------------
 # Freesurfer Install
 # https://surfer.nmr.mgh.harvard.edu/fswiki/DownloadAndInstall
-# Obtain individual liscence: 
+# Obtain individual license: 
 # https://surfer.nmr.mgh.harvard.edu/registration.html
 #-------------------
 USER root
