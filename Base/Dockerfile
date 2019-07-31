@@ -3,6 +3,15 @@
 # Base Image
 # fgiuste/base:base
 
+#------------------------------------------------
+# Description:
+# Foundation image for future images based on Ubuntu 18
+# Creates user: mainuser
+# Creates Directories for organized mounting
+# ENTRYPOINT ["/home/startup.sh"]
+# CMD ["/bin/bash"]
+#------------------------------------------------
+
 FROM ubuntu:18.04
 
 
