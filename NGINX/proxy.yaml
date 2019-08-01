@@ -1,0 +1,48 @@
+# Felipe Giuste
+# 8/1/2019
+
+# hosts flask application behind NGINX proxy (port 80)
+
+version: "3"
+
+networks:
+  Application:
+
+services:
+  nginx:
+    # proxy server
+    image: nginx
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        delay: 5s
+      resources:
+        limits:
+          cpus: "0.1"
+          memory: 50M
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "80:80" 
+    networks: 
+      - Application
+
+  flaskApp:
+    # Application behind proxy
+    image: fgiuste/flask:production
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+        delay: 5s
+      resources:
+        limits:
+          cpus: "2"
+          memory: 5G
+    volumes:
+      - ./flaskApp/:/apps/:ro
+    expose: 
+      - "8888"
+    networks: 
+      - Application
