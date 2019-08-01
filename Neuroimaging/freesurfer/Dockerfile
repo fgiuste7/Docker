@@ -42,6 +42,7 @@ RUN sed -i '$isource $FREESURFER_HOME/SetUpFreeSurfer.sh' $ENTRYPOINT
 #RUN rm tutorial_data.tar.gz
 #ENV TUTORIAL_DATA=/path/to/your/tutorial/dir
 
+### Needs matlab compiler?
 
 #-------------------
 # Permissions

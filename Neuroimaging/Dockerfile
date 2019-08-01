@@ -1,6 +1,6 @@
 # Created: 4/9/2019 (FG)
 # Updated: 6/12/2019 (FG)
-# fgiuste/base:jupyter
+# fgiuste/base:neuroimaging
 #--------------
 # OS: Ubuntu 18
 #--------------
