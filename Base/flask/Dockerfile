@@ -1,15 +1,13 @@
 # 12/27/2018 (FG)
 # fgiuste/base:flask
-<<<<<<< Updated upstream
 #--------------
 # OS: Ubuntu 18
 #--------------
-=======
+
 #------------------------------------------------
 # Inherits: fgiuste/base:flask                  |
 # From ubuntu:18.04                             |
 #------------------------------------------------
->>>>>>> Stashed changes
 FROM fgiuste/base:base
 
 #------------
