@@ -5,6 +5,6 @@ fgiuste/base:python
 # Ex:
 dockerport=8777
 # only one requirements.txt
-pyenv="${HOME}/pythonEnvs"
-docker run -it --rm --name Dask -v ${pyenv}:/env/:rw -p ${dockerport}:8888 fgiuste/base:python
+pyenv="${HOME}/pythonEnvs/requirements.txt"
+docker run -it --rm --name Dask -v ${pyenv}:/env/requirements.txt:rw -p ${dockerport}:8888 fgiuste/base:python
 
