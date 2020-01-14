@@ -7,9 +7,15 @@
 FROM tensorflow/tensorflow:latest-gpu-py3
 ENV PROFILE='/home/mainuser/.profile'
 
-#----------------------------------------------
+#-----------------------------
+# Non-interactive Frontend 
+# Prevents installation stalls
+#-----------------------------
+ENV DEBIAN_FRONTEND=noninteractive 
+
+#--------------------------
 # Create new user: mainuser
-#----------------------------------------------
+#--------------------------
 USER root
 RUN useradd --no-user-group --create-home --shell /bin/bash mainuser
 
@@ -53,50 +59,57 @@ RUN apt-get update -qq && apt-get install -yq --no-install-recommends \
 
 #----------------------
 # Install Text Editors:
-# vim, nano, less
+# vim, nano, less, graphviz
 #----------------------
 USER root
 RUN apt-get update -qq \
     && apt-get install -y -q --no-install-recommends vim \
                                                      nano \
                                                      less \
+						     graphviz \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 #----------------------
-# Install scipy:
-# Version: 1.2.1
-# Install scikit-learn:
-# Version: 0.20.3
+# Install 
+# scipy
+# scikit-learn
+# scikit-image
+# imageio
+# graphviz
+# pydot
+# tqdm
 #----------------------
 #USER root
-#RUN pip install scipy==1.2.1
-#RUN pip install scikit-learn==0.20.3
+RUN pip install scipy==1.4.1
+RUN pip install scikit-learn==0.22.1
+RUN pip install scikit-image==0.16.2
+RUN pip install imageio==2.6.1
+RUN pip install graphviz==0.13.2
+RUN pip install pydot==1.4.1
+RUN pip install tqdm==4.41.1
+RUN pip install joblib==0.14.1
 
 #-----------------------
 # Install opencv-python:
-# Version: 4.1.0.25
 #-----------------------
 USER root
-RUN pip install --no-cache-dir opencv-python==4.1.0.25
+RUN pip install --no-cache-dir opencv-python==4.1.2.30
 
 #----------------
 # Install dask:
-# Version: 0.12.0
 #----------------
 USER root
-RUN pip install --no-cache-dir "dask[complete]"==1.1.5
+RUN pip install --no-cache-dir "dask[complete]"==2.9.1
 
 #---------------
 # Install zarr:
-# Version: 2.3.1
 #---------------
 USER root
-RUN pip install --no-cache-dir zarr==2.3.1
+RUN pip install --no-cache-dir zarr==2.4.0
 
 #-----------------
 # Install seaborn:
-# Version: 0.9.0
 #-----------------
 USER root
 RUN pip install --no-cache-dir seaborn==0.9.0
@@ -121,7 +134,7 @@ RUN mkdir -p /code && chmod -R 777 /code
 RUN mkdir -p /data && chmod -R 777 /data
 RUN mkdir -p /output && chmod -R 777 /output
 RUN mkdir -p /apps && chmod -R 777 /apps
-RUN chmod -R 777 /notebooks
+RUN mkdir -p /notebooks && chmod -R 777 /notebooks
 
 #-------------------------
 # Login as user: mainuser:
