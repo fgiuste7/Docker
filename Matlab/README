@@ -9,8 +9,8 @@
 ### Within matlab: mcc -m test.m
 
 ## Step 3:
-functionDirectory='${PWD}'
-docker run --rm -v ${functionDirectory}:/code fgiuste/matlab ./test 'goodbye'
+functionDirectory=${PWD}
+docker run --rm -v ${functionDirectory}:/code fgiuste/matlab ./test 'hello'
 
 ## Step 4:
 ### Check success 
