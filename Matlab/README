@@ -2,16 +2,16 @@
 # 1/29/2020
 # Run Matlab function within Docker
 
-## Step 1: 
-### Write function within matlab (Ex. test.m, takes string as input, outputs string to text file:'output.txt')
+## Step 1: Write function within matlab
+### Ex. test.m, takes string as input, outputs string to text file:'output.txt'
 
-## Step 2: (Make sure you are in the correct directory within matlab, cd functionDirectory)
+## Step 2: Compile function with mcc (within matlab)
+### Make sure you are in the correct directory within matlab, cd functionDirectory
 ### Within matlab: mcc -m test.m
 
-## Step 3:
+## Step 3: Run function within Docker (on any computer)
 functionDirectory=${PWD}
 docker run --rm -v ${functionDirectory}:/code fgiuste/matlab ./test 'hello'
 
-## Step 4:
-### Check success 
+## Step 4: Check success 
 cat ${functionDirectory}/output.txt
