@@ -2,3 +2,7 @@
 RWB/
 
 \.vscode/settings\.json
+
+*.m~
+
+Matlab/test.m
