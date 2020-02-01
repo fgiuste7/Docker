@@ -1,0 +1,32 @@
+
+MAC_ADDRESS=`cat /sys/class/net/enp0*/address`
+MATLAB_ROOT='/usr/local/MATLAB/R2019b/'
+MATLAB_LICENCE='/home/fgiuste/.matlab/R2019b_licenses'
+
+# Testing:
+docker run -it --rm --mac-address=${MAC_ADDRESS} -v /etc/passwd:/etc/passwd:ro -v ${MATLAB_LICENCE}:/home/$(whoami)/.matlab/R2019b_licenses -v ${MATLAB_ROOT}:/usr/local/MATLAB/from-host -v /home/${USER}:/casa/BvDatabase -v /home/${USER}/.ssh/id_rsa:/home/${USER}/.ssh/id_rsa -v /home/${USER}/.ssh/id_rsa.pub:/home/${USER}/.ssh/id_rsa.pub  -v /tmp/.X11-unix:/tmp/.X11-unix -e QT_X11_NO_MITSHM=1 --privileged -e DISPLAY=$DISPLAY -v /usr/share/X11/locale:/usr/share/X11/locale:ro fgiuste/intranat
+
+PATH=${PATH}:/usr/local/MATLAB/from-host/bin/
+
+# Test matlab: 
+matlab
+
+# As SUDO, copy necessary files over to current user (password: Docker!):
+su 
+cp -r /home/user/.brainvisa/ /home/fgiuste/
+cp -r /home/user/.soma-workflow/ /home/fgiuste/
+cp -r /home/user/.subversion/ /home/fgiuste/
+cp -r /home/user/matlab /home/fgiuste/
+chmod 777 -R /home/fgiuste/
+. /home/user/.bashrc
+
+cd /usr/local/IntrAnat && python /usr/local/IntrAnat/ImageImport.py
+
+
+# Error matlab not found:
+# Test code (https://github.com/IntrAnatSEEGSoftware/IntrAnat/blob/master/externalprocesses.py): 
+# matlab -nosplash -nodisplay -r 'quit;'
+
+# Solution:
+# cd /usr/local/IntrAnat && vim externalprocesses.py
+# Add shell=True within subprocess commands (one in matlab test script, and one in matlab run script)
