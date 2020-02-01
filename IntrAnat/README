@@ -18,7 +18,12 @@ cp -r /home/user/.soma-workflow/ /home/fgiuste/
 cp -r /home/user/.subversion/ /home/fgiuste/
 cp -r /home/user/matlab /home/fgiuste/
 chmod 777 -R /home/fgiuste/
-. /home/user/.bashrc
+
+# Leave sudo
+exit
+# Run .bashrc
+cd
+source /home/user/.bashrc
 
 cd /usr/local/IntrAnat && python /usr/local/IntrAnat/ImageImport.py
 
