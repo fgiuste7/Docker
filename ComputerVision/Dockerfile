@@ -1,18 +1,17 @@
 # Created: 2/18/2020 (FG)
-# fgiuste/opencv
+# fgiuste/computervision
 #----------------------------
 # Inherits: fgiuste/base:base
 # OS: Ubuntu 18             
 #----------------------------
-FROM fgiuste/base:jupyter_token
-
+FROM fgiuste/ml:latest
 
 #----------------------
 # Install Dependencies:
 #----------------------
 USER root
 RUN apt-get update && apt-get install -yq --no-install-recommends build-essential
-RUN apt-get install -yq --no-install-recommends cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
+RUN apt-get install -yq --no-install-recommends wget cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
 RUN apt-get install -yq --no-install-recommends python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev 
 
 #-----------------
@@ -30,21 +29,18 @@ RUN mkdir build
 WORKDIR build
 
 RUN cmake -D CMAKE_BUILD_TYPE=RELEASE \
-    -D CMAKE_INSTALL_PREFIX=/opt/conda \
-    -D WITH_CUDA=ON \
-    -D PYTHON3_EXECUTABLE=/opt/conda/bin/python \
-    -D PYTHON_INCLUDE_DIR=/opt/conda/include/python3.7m/ \
-    -D PYTHON_LIBRARY=/opt/conda/lib/libpython3.7m.so \
+    -D CMAKE_INSTALL_PREFIX=/usr/local \
+    -D PYTHON3_EXECUTABLE=/usr/local/bin/python \
+    -D PYTHON_INCLUDE_DIR=/usr/include/python3.6m \
+    -D PYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython3.6m.so \
     -D INSTALL_PYTHON_EXAMPLES=ON \
     -D OPENCV_EXTRA_MODULES_PATH=/openCV/opencv_contrib/modules \
     -D OPENCV_ENABLE_NONFREE=ON \
     -D BUILD_EXAMPLES=ON ..
 
-RUN make -j6
+RUN make -j7
 RUN make install
 
-# SIFT: sift=cv2.xfeatures2d.SIFT_create()
-# SURF: surf=cv2.xfeatures2d.SURF_create()
 
 
 
