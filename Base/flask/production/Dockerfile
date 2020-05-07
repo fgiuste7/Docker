@@ -10,8 +10,7 @@ FROM fgiuste/base:flask
 # Install uwsgi + gunicorn
 #-------------------------
 USER root
-RUN apt-get install -yq uwsgi
-RUN apt-get install -yq gunicorn
+RUN apt-get update && apt-get install -yq uwsgi gunicorn
 
 #----------------
 # Install pymongo
