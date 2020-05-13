@@ -6,6 +6,7 @@
 #----------------------------
 FROM fgiuste/ml:latest
 
+
 #----------------------
 # Install Dependencies:
 #----------------------
@@ -14,9 +15,11 @@ RUN apt-get update && apt-get install -yq --no-install-recommends build-essentia
 RUN apt-get install -yq --no-install-recommends wget cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
 RUN apt-get install -yq --no-install-recommends python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev 
 
+
 #-----------------
 # Download OpenCV:
 #-----------------
+USER root
 RUN mkdir /openCV && chmod -R 777 /openCV
 WORKDIR /openCV
 RUN wget -O opencv.zip https://github.com/opencv/opencv/archive/3.4.9.zip
@@ -42,9 +45,18 @@ RUN make -j7
 RUN make install
 
 
+#------------------
+# Install large-image and openslide
+#------------------
+USER root
+RUN apt-get update && apt-get install -yq python3-openslide
+
+RUN pip install large-image[all] --find-links https://girder.github.io/large_image_wheels
+# RUN pip install large-image
 
 
-
-
-
+#------------------
+# Login as mainuser
+#------------------
+USER mainuser
 
