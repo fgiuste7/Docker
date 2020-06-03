@@ -52,11 +52,17 @@ USER root
 RUN apt-get update && apt-get install -yq python3-openslide
 
 RUN pip install large-image[all] --find-links https://girder.github.io/large_image_wheels
-# RUN pip install large-image
+
+
+#------------------
+# PyTorch
+#------------------
+pip install torch==1.5.0+cu101 torchvision==0.6.0+cu101 -f https://download.pytorch.org/whl/torch_stable.html
 
 
 #------------------
 # Login as mainuser
 #------------------
 USER mainuser
+WORKDIR /home/mainuser
 
