@@ -5,7 +5,7 @@
 # Inherits: tensorflow/tensorflow:latest-gpu-py3 (4/11/2019)
 # https://github.com/jupyter/docker-stacks/blob/master/tensorflow-notebook/Dockerfile
 #----------------------------------------------------------
-FROM tensorflow/tensorflow:2.2.0rc2-gpu-py3 #tensorflow/tensorflow:latest-gpu-py3
+FROM tensorflow/tensorflow:2.2.0rc2-gpu-py3
 ENV PROFILE='/home/mainuser/.profile'
 
 #-----------------------------
