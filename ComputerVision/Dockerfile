@@ -1,11 +1,11 @@
-# Created: 2/18/2020 (FG)
+# Created: 02/18/2020 (FG)
+# Updated: 07/24/2020 (FG)
 # fgiuste/computervision
 #----------------------------
 # Inherits: fgiuste/base:base
 # OS: Ubuntu 18             
 #----------------------------
 FROM fgiuste/ml:latest
-
 
 #----------------------
 # Install Dependencies:
@@ -14,7 +14,6 @@ USER root
 RUN apt-get update && apt-get install -yq --no-install-recommends build-essential
 RUN apt-get install -yq --no-install-recommends wget cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
 RUN apt-get install -yq --no-install-recommends python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev 
-
 
 #-----------------
 # Download OpenCV:
@@ -44,22 +43,34 @@ RUN cmake -D CMAKE_BUILD_TYPE=RELEASE \
 RUN make -j7
 RUN make install
 
-
-#------------------
-# Install large-image and openslide
-#------------------
-USER root
-RUN apt-get update && apt-get install -yq python3-openslide
-
-RUN pip install large-image[all] --find-links https://girder.github.io/large_image_wheels
-
-
 #------------------
 # PyTorch
 #------------------
 USER root
-RUN pip install torch==1.5.0+cu101 torchvision==0.6.0+cu101 -f https://download.pytorch.org/whl/torch_stable.html
+RUN pip install torch==1.5.1+cu101 torchvision==0.6.1+cu101 -f https://download.pytorch.org/whl/torch_stable.html
 
+#------------------
+# Install WSI packages:
+# large-image 
+# openslide
+# HistomicsTK
+#------------------
+USER root
+RUN apt-get update && apt-get install -yq python3-openslide
+RUN pip install large-image[all] --find-links https://girder.github.io/large_image_wheels
+RUN pip install histomicstk --find-links https://girder.github.io/large_image_wheels
+
+#----------------
+# Install dask:
+#----------------
+USER root
+RUN pip install --no-cache-dir "dask[complete]"==2.21.0
+
+#---------------
+# Install zarr:
+#---------------
+USER root
+RUN pip install --no-cache-dir zarr==2.4.0
 
 #------------------
 # Login as mainuser

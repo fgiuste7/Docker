@@ -1,10 +1,11 @@
-# 4/11/2019 (FG)
-# fgiuste/ml:py3
+# Created: 04/11/2019 (FG)
+# Updated: 07/24/2020 (FG)
+# fgiuste/ml:latest
 #----------------------------------------------------------
 # Inherits: tensorflow/tensorflow:latest-gpu-py3 (4/11/2019)
 # https://github.com/jupyter/docker-stacks/blob/master/tensorflow-notebook/Dockerfile
 #----------------------------------------------------------
-FROM tensorflow/tensorflow:latest-gpu-py3
+FROM tensorflow/tensorflow:2.2.0rc2-gpu-py3 #tensorflow/tensorflow:latest-gpu-py3
 ENV PROFILE='/home/mainuser/.profile'
 
 #-----------------------------
@@ -26,11 +27,9 @@ USER mainuser
 RUN echo "alias ls='ls -lha --color=auto' " >> $PROFILE
 RUN echo "alias rm='rm -i' " >> $PROFILE
 
-#----------------------------------------
-# Jupyter Notebook Profile setup
-# Also sets up server password.
-# Change here to create your own password
-#----------------------------------------
+#------------------------
+# Jupyter Notebook Setup:
+#------------------------
 USER root
 
 RUN mkdir -p /home/mainuser/.jupyter \
@@ -41,7 +40,6 @@ RUN mkdir -p /home/mainuser/.jupyter \
 #--------------------
 USER root
 RUN pip install ipywidgets
-
 
 #---------------------
 # Install: 
@@ -56,6 +54,7 @@ RUN apt-get update -qq && apt-get install -yq --no-install-recommends \
     tree \
     screen \
     && apt-get clean
+
 
 #----------------------
 # Install Text Editors:
@@ -82,37 +81,19 @@ RUN apt-get update -qq \
 #----------------------
 #USER root
 RUN pip install scipy==1.4.1
-RUN pip install scikit-learn==0.22.1
-RUN pip install scikit-image==0.16.2
-RUN pip install imageio==2.6.1
-RUN pip install graphviz==0.13.2
+RUN pip install scikit-learn==0.23.1
+RUN pip install scikit-image==0.17.2
+RUN pip install imageio==2.9.0
+RUN pip install graphviz==0.14.1
 RUN pip install pydot==1.4.1
-RUN pip install tqdm==4.41.1
-RUN pip install joblib==0.14.1
-
-#-----------------------
-# Install opencv-python:
-#-----------------------
-USER root
-RUN pip install --no-cache-dir opencv-python==4.1.2.30
-
-#----------------
-# Install dask:
-#----------------
-USER root
-RUN pip install --no-cache-dir "dask[complete]"==2.9.1
-
-#---------------
-# Install zarr:
-#---------------
-USER root
-RUN pip install --no-cache-dir zarr==2.4.0
+RUN pip install tqdm==4.48.0
+RUN pip install joblib==0.16.0
 
 #-----------------
 # Install seaborn:
 #-----------------
 USER root
-RUN pip install --no-cache-dir seaborn==0.9.0
+RUN pip install --no-cache-dir seaborn==0.10.1
 
 #-----------------------------
 # Install pandoc and TeX Live:
