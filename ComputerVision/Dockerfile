@@ -7,6 +7,30 @@
 #----------------------------
 FROM fgiuste/ml:latest
 
+#----------------
+# Install dask:
+#----------------
+USER root
+RUN pip install --no-cache-dir "dask[complete]"==2.21.0
+
+#------------------
+# PyTorch
+#------------------
+USER root
+RUN pip install torch==1.5.1+cu101 torchvision==0.6.1+cu101 -f https://download.pytorch.org/whl/torch_stable.html
+
+#------------------
+# Install WSI packages:
+# large-image 
+# openslide
+# HistomicsTK
+#------------------
+USER root
+RUN apt-get update && apt-get install -yq python3-openslide
+RUN pip install large-image[all] --find-links https://girder.github.io/large_image_wheels
+RUN pip install histomicstk --find-links https://girder.github.io/large_image_wheels
+
+
 #----------------------
 # Install Dependencies:
 #----------------------
@@ -42,35 +66,6 @@ RUN cmake -D CMAKE_BUILD_TYPE=RELEASE \
 
 RUN make -j7
 RUN make install
-
-#------------------
-# PyTorch
-#------------------
-USER root
-RUN pip install torch==1.5.1+cu101 torchvision==0.6.1+cu101 -f https://download.pytorch.org/whl/torch_stable.html
-
-#------------------
-# Install WSI packages:
-# large-image 
-# openslide
-# HistomicsTK
-#------------------
-USER root
-RUN apt-get update && apt-get install -yq python3-openslide
-RUN pip install large-image[all] --find-links https://girder.github.io/large_image_wheels
-RUN pip install histomicstk --find-links https://girder.github.io/large_image_wheels
-
-#----------------
-# Install dask:
-#----------------
-USER root
-RUN pip install --no-cache-dir "dask[complete]"==2.21.0
-
-#---------------
-# Install zarr:
-#---------------
-USER root
-RUN pip install --no-cache-dir zarr==2.4.0
 
 #------------------
 # Login as mainuser
