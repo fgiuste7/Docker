@@ -11,13 +11,14 @@ FROM fgiuste/ml:latest
 # Install dask:
 #----------------
 USER root
-RUN pip install --no-cache-dir "dask[complete]"==2.21.0
+RUN pip install --no-cache-dir "dask[complete]"==2.24.0
 
 #------------------
 # PyTorch
 #------------------
 USER root
-RUN pip install torch==1.5.1+cu101 torchvision==0.6.1+cu101 -f https://download.pytorch.org/whl/torch_stable.html
+RUN pip install torch==1.6.0+cu101 torchvision==0.7.0+cu101 -f https://download.pytorch.org/whl/torch_stable.html
+# pip install torch==1.5.1+cu101 torchvision==0.6.1+cu101 -f https://download.pytorch.org/whl/torch_stable.html
 
 #------------------
 # Install WSI packages:
