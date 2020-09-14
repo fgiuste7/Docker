@@ -2,7 +2,7 @@
 # Updated: 07/24/2020 (FG)
 # fgiuste/ml:latest
 #----------------------------------------------------------
-# Inherits: tensorflow/tensorflow:latest-gpu-py3 (4/11/2019)
+# Inherits: tensorflow/tensorflow:version-gpu-py3 
 # https://github.com/jupyter/docker-stacks/blob/master/tensorflow-notebook/Dockerfile
 #----------------------------------------------------------
 FROM tensorflow/tensorflow:2.2.0rc2-gpu-py3
