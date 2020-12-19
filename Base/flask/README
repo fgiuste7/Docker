@@ -1,1 +1,10 @@
+# Basic flask server
+# Felipe Giuste
 Inherits fgiuste/base:base
+
+
+#------------
+# How to run:
+#------------
+# within directory containing run.py and app class (app folder containing __init__.py + routes.py)
+# docker run --rm -p8081:8888 -v ${PWD}:/apps/:rw fgiuste/base:flask
