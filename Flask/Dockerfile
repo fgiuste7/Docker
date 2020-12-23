@@ -109,7 +109,7 @@ RUN chmod -R 777 /home
 # host='0.0.0.0'
 #---------------------
 USER mainuser
-CMD ["python", "/apps/routes.py"]
+# CMD ["python", "/apps/routes.py"]
 
 
 #------------------------------------------
