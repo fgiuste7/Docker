@@ -40,7 +40,7 @@ RUN conda install -y traits \
                      plotly \
                      h5py \
                      pytables \
-    && sync && conda clean -tipsy \
+    && sync && conda build purge-all \
     && sync
 
 RUN rm -rf /opt/conda/pkgs/*
