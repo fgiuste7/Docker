@@ -40,7 +40,7 @@ RUN conda install -y traits \
                      plotly \
                      h5py \
                      pytables \
-    && sync && conda build purge-all \
+    && sync && conda clean -tipsy \
     && sync
 
 RUN rm -rf /opt/conda/pkgs/*
@@ -50,7 +50,7 @@ RUN rm -rf /opt/conda/pkgs/*
 # Allow mainuser conda install
 #-----------------------------
 USER root
-RUN chmod -R 777 /opt/conda
+#RUN chmod -R 777 /opt/conda
 
 
 #-----------------------
