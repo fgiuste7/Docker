@@ -9,21 +9,21 @@ FROM fgiuste/base:base
 
 
 #----------------------------
-# Install Miniconda3: 4.6.14:
+# Install Miniconda3: 4.9.2:
 #----------------------------
 USER root
 ENV CONDA_DIR=/opt/conda \
     PATH=/opt/conda/bin:$PATH
 RUN echo "Downloading Miniconda installer ..." \
     && miniconda_installer=/tmp/miniconda.sh \
-    && curl -sSL --retry 5 -o $miniconda_installer https://repo.continuum.io/miniconda/Miniconda3-4.7.12.1-Linux-x86_64.sh \
+    && curl -sSL --retry 5 -o $miniconda_installer https://repo.continuum.io/miniconda/Miniconda3-py39_4.9.2-Linux-x86_64.sh \
     && /bin/bash $miniconda_installer -b -p $CONDA_DIR \
     && rm -f $miniconda_installer \
     && conda config --system --prepend channels conda-forge \
     && conda config --system --set auto_update_conda false \
     && conda config --system --set show_channel_urls true \
     && conda clean -tipy && sync
-
+# && curl -sSL --retry 5 -o $miniconda_installer https://repo.continuum.io/miniconda/Miniconda3-4.7.12.1-Linux-x86_64.sh \
 
 #---------------
 # Conda Install:
