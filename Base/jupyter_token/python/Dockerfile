@@ -35,15 +35,14 @@ ENV BASHRC /home/mainuser/.bashrc
 
 RUN echo '#!/bin/bash' > $ENTRYPOINT \
     && echo 'set +x' >> $ENTRYPOINT \
-    && echo 'pip install -r /env/requirements.txt' >> $ENTRYPOINT \
     && echo 'exec "$@"' >> $ENTRYPOINT
-
+#     && echo 'pip install -r /env/requirements.txt' >> $ENTRYPOINT \ #(before last line)
 
 #----------------------------------
 # Define ROOT password: FOR TESTING
 #----------------------------------
-USER root
-RUN echo "root:Docker!" | chpasswd
+#USER root
+#RUN echo "root:Docker!" | chpasswd
 
 
 #------------------------

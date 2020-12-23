@@ -50,7 +50,9 @@ RUN rm -rf /opt/conda/pkgs/*
 # Allow mainuser conda install
 #-----------------------------
 USER root
-#RUN chmod -R 777 /opt/conda
+RUN chmod -R 777 /opt/conda/pkgs
+# RUN chmod -R 777 /opt/conda
+
 
 
 #-----------------------
