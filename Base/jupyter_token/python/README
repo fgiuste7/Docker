@@ -1,5 +1,7 @@
 fgiuste/base:python
 
+
+## The following is no longer true ##
 # Creates python environment from requirements.txt file mounted in /env
 
 # Ex:
