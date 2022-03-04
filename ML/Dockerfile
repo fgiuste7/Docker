@@ -1,11 +1,13 @@
 # Created: 04/11/2019 (FG)
 # Updated: 07/24/2020 (FG)
+# Updated: 2022-03-03 (FG)
 # fgiuste/ml:latest
 #----------------------------------------------------------
 # Inherits: tensorflow/tensorflow:version-gpu-py3 
 # https://github.com/jupyter/docker-stacks/blob/master/tensorflow-notebook/Dockerfile
 #----------------------------------------------------------
-FROM tensorflow/tensorflow:2.2.0rc2-gpu-py3
+#FROM tensorflow/tensorflow:2.2.0rc2-gpu-py3
+FROM tensorflow/tensorflow:2.7.1-gpu-jupyter
 ENV PROFILE='/home/mainuser/.profile'
 
 #-----------------------------
