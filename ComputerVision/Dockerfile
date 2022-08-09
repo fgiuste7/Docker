@@ -1,6 +1,7 @@
 # Created: 02/18/2020 (FG)
 # Updated: 07/24/2020 (FG)
 # Updated: 2022-03-03 (FG)
+# Updated: 2022-08-05 (FG)
 # fgiuste/computervision
 
 #----------------------------
@@ -17,20 +18,23 @@ RUN pip install --no-cache-dir "dask[complete]"
 #--------------
 # Install HDF5:
 #--------------
+USER root
 RUN pip install h5py
 
 #--------------
 # Install Zarr:
 #--------------
+USER root
 RUN pip install zarr
 
 #------------------
 # PyTorch
 #------------------
 USER root
-RUN pip install torch torchvision torchaudio
 #RUN pip install torch==1.6.0+cu101 torchvision==0.7.0+cu101 -f https://download.pytorch.org/whl/torch_stable.html
-# pip install torch==1.5.1+cu101 torchvision==0.6.1+cu101 -f https://download.pytorch.org/whl/torch_stable.html
+#RUN pip install torch==1.5.1+cu101 torchvision==0.6.1+cu101 -f https://download.pytorch.org/whl/torch_stable.html
+RUN pip install torch torchvision torchaudio
+
 
 #------------
 # Jupyter Lab 
@@ -39,15 +43,16 @@ USER root
 RUN pip install jupyterlab
 
 #------------------
+# SKIPPED
 # Install WSI packages:
 # large-image 
 # openslide
 # HistomicsTK
 #------------------
-USER root
-RUN apt-get update && apt-get install -yq python3-openslide
-RUN pip install large-image[all] --find-links https://girder.github.io/large_image_wheels
-RUN pip install histomicstk --find-links https://girder.github.io/large_image_wheels
+# USER root
+# RUN apt-get update && apt-get install -yq python3-openslide
+# RUN pip install large-image[all] --find-links https://girder.github.io/large_image_wheels
+# RUN pip install histomicstk --find-links https://girder.github.io/large_image_wheels
 
 
 #----------------------
@@ -93,10 +98,11 @@ RUN pip install opencv-python
 #-------------------------
 USER mainuser
 WORKDIR /home/mainuser
+
 #------------------
 # Start Jupyter Lab
 #------------------
-CMD ["jupyter", "lab", "--notebook-dir=/"]
+CMD ["jupyter", "lab", "--notebook-dir=/", "--ip", "0.0.0.0"]
 
 #------------------
 # Login as mainuser

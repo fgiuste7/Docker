@@ -1,13 +1,15 @@
 # Created: 04/11/2019 (FG)
 # Updated: 07/24/2020 (FG)
 # Updated: 2022-03-03 (FG)
+# Updated: 2022-08-05 (FG)
 # fgiuste/ml:latest
 #----------------------------------------------------------
 # Inherits: tensorflow/tensorflow:version-gpu-py3 
 # https://github.com/jupyter/docker-stacks/blob/master/tensorflow-notebook/Dockerfile
 #----------------------------------------------------------
 #FROM tensorflow/tensorflow:2.2.0rc2-gpu-py3
-FROM tensorflow/tensorflow:2.7.1-gpu-jupyter
+#FROM tensorflow/tensorflow:2.7.1-gpu-jupyter
+FROM tensorflow/tensorflow:latest-gpu-jupyter
 ENV PROFILE='/home/mainuser/.profile'
 
 #-----------------------------
@@ -37,6 +39,13 @@ USER root
 RUN mkdir -p /home/mainuser/.jupyter \
     && echo 'c.NotebookApp.ip = "0.0.0.0"' > /home/mainuser/.jupyter/jupyter_notebook_config.py
 
+
+#----------------------------
+# Silence PIP update Warning:
+#----------------------------
+USER root
+RUN pip config set global.disable-pip-version-check true
+
 #--------------------
 # Install ipywidgets:
 #--------------------
@@ -56,7 +65,6 @@ RUN apt-get update -qq && apt-get install -yq --no-install-recommends \
     tree \
     screen \
     && apt-get clean
-
 
 #----------------------
 # Install Text Editors:
@@ -81,21 +89,20 @@ RUN apt-get update -qq \
 # pydot
 # tqdm
 #----------------------
-#USER root
-RUN pip install scipy==1.4.1
-RUN pip install scikit-learn==0.23.1
-RUN pip install scikit-image==0.17.2
-RUN pip install imageio==2.9.0
-RUN pip install graphviz==0.14.1
-RUN pip install pydot==1.4.1
-RUN pip install tqdm==4.48.0
-RUN pip install joblib==0.16.0
+RUN pip install scipy
+RUN pip install scikit-learn
+RUN pip install scikit-image
+RUN pip install imageio
+RUN pip install graphviz
+RUN pip install pydot
+RUN pip install tqdm
+RUN pip install joblib
 
 #-----------------
 # Install seaborn:
 #-----------------
 USER root
-RUN pip install --no-cache-dir seaborn==0.10.1
+RUN pip install --no-cache-dir seaborn
 
 #-----------------------------
 # Install pandoc and TeX Live:
