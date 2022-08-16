@@ -1,7 +1,7 @@
 # Created: 02/18/2020 (FG)
 # Updated: 07/24/2020 (FG)
 # Updated: 2022-03-03 (FG)
-# Updated: 2022-08-05 (FG)
+# Updated: 2022-08-10 (FG)
 # fgiuste/computervision
 
 #----------------------------
@@ -10,37 +10,29 @@
 FROM fgiuste/ml:latest
 
 #----------------
-# Install dask:
+# Install dask: SKIPPED
 #----------------
-USER root
-RUN pip install --no-cache-dir "dask[complete]"
+# USER mainuser
+# RUN pip install --user --no-cache-dir "dask[complete]"
 
 #--------------
-# Install HDF5:
+# Install HDF5: SKIPPED
 #--------------
-USER root
-RUN pip install h5py
+# USER mainuser
+# RUN pip install --user --no-cache-dir h5py
 
 #--------------
-# Install Zarr:
+# Install Zarr: SKIPPED
 #--------------
-USER root
-RUN pip install zarr
-
-#------------------
-# PyTorch
-#------------------
-USER root
-#RUN pip install torch==1.6.0+cu101 torchvision==0.7.0+cu101 -f https://download.pytorch.org/whl/torch_stable.html
-#RUN pip install torch==1.5.1+cu101 torchvision==0.6.1+cu101 -f https://download.pytorch.org/whl/torch_stable.html
-RUN pip install torch torchvision torchaudio
-
+# USER mainuser
+# RUN pip install --user --no-cache-dir zarr
 
 #------------
 # Jupyter Lab 
 #------------
-USER root
-RUN pip install jupyterlab
+USER mainuser
+RUN pip install --user --no-cache-dir --upgrade nbformat
+RUN pip install --user --no-cache-dir jupyterlab
 
 #------------------
 # SKIPPED
@@ -51,23 +43,23 @@ RUN pip install jupyterlab
 #------------------
 # USER root
 # RUN apt-get update && apt-get install -yq python3-openslide
+# USER mainuser
 # RUN pip install large-image[all] --find-links https://girder.github.io/large_image_wheels
 # RUN pip install histomicstk --find-links https://girder.github.io/large_image_wheels
 
-
-#----------------------
-# Install Dependencies:
-#----------------------
-USER root
-RUN apt-get update && apt-get install -yq --no-install-recommends build-essential
-RUN apt-get install -yq --no-install-recommends wget cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
-RUN apt-get install -yq --no-install-recommends python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev 
+#-----------------------------
+# Install OpenCV Dependencies: SKIPPED
+#-----------------------------
+# USER root
+# RUN apt-get update && apt-get install -yq --no-install-recommends build-essential
+# RUN apt-get install -yq --no-install-recommends wget cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
+# RUN apt-get install -yq --no-install-recommends python-dev python-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev 
 
 #-----------------
 # Download OpenCV:
 #-----------------
-USER root
-RUN pip install opencv-python
+USER mainuser
+RUN pip install --user --no-cache-dir opencv-contrib-python-headless
 
 #RUN mkdir /openCV && chmod -R 777 /openCV
 #WORKDIR /openCV
@@ -109,4 +101,3 @@ CMD ["jupyter", "lab", "--notebook-dir=/", "--ip", "0.0.0.0"]
 #------------------
 USER mainuser
 WORKDIR /home/mainuser
-

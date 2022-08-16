@@ -1,0 +1,10 @@
+# Created: 08/15/2022 (FG)
+
+# aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 763104351884.dkr.ecr.us-east-2.amazonaws.com
+# docker pull 763104351884.dkr.ecr.us-east-2.amazonaws.com/pytorch-training:1.12.0-gpu-py38-cu116-ubuntu20.04-e3
+
+#------------
+# Inheritance: AWS PyTorch with GPU
+#------------
+FROM 763104351884.dkr.ecr.us-east-2.amazonaws.com/pytorch-training:1.12.0-gpu-py38-cu116-ubuntu20.04-e3
+

@@ -1,0 +1,113 @@
+# Created: 04/11/2019 (FG)
+# Updated: 07/24/2020 (FG)
+# Updated: 2022-03-03 (FG)
+# Updated: 2022-08-10 (FG)
+# Updated: 2022-08-11 (FG)
+
+#------------
+# Inheritance
+#------------
+FROM tensorflow/tensorflow:latest-gpu
+#FROM {{{ imagebuilder:parentImage }}}
+#{{{ imagebuilder:environments }}}
+#FROM public.ecr.aws/a0j8d1q6/aws-ai:1.12.0-gpu-py38-cu116-ubuntu20.04-e3
+
+#------------
+# Environment
+#------------
+ENV HOME='/home/mainuser' 
+ENV ALIASES='/home/mainuser/.bash_aliases'
+ENV PATH=${PATH}:/home/mainuser/.local/bin
+
+#-----------------------------
+# Non-interactive Frontend 
+# Prevents installation stalls
+#-----------------------------
+ENV DEBIAN_FRONTEND=noninteractive 
+
+#--------------------------
+# Create new user: mainuser
+#--------------------------
+USER root
+RUN useradd --no-user-group --create-home --shell /bin/bash mainuser
+
+#--------------------------------------
+# Add aliases with personal preferences
+#--------------------------------------
+USER mainuser
+RUN echo "alias ls='ls -lha --color=auto' " >> $ALIASES
+RUN echo "alias rm='rm -i' " >> $ALIASES
+RUN chmod 777 $ALIASES
+
+#------------------------------
+# Install: basic bash utilities
+#------------------------------
+USER root
+RUN apt-get update -qq && apt-get install -yq --no-install-recommends \
+    apt-utils ca-certificates curl locales unzip gnupg dirmngr \
+    libsm6 libxext6 \
+    libxrender-dev \
+    tree \
+    chrony \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+#-----------------------------
+# Install pandoc and TeX Live:
+# To convert: ipynb -> pdf
+#-----------------------------
+USER root
+RUN apt-get update -qq && apt-get install -yq pandoc texlive-xetex \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+#----------------------------
+# Silence PIP update Warning:
+#----------------------------
+USER root
+RUN pip install --no-cache-dir --upgrade pip
+RUN HOME='/' pip config --global set global.disable-pip-version-check true
+
+#----------------------
+# Pip Install 
+#----------------------
+USER mainuser
+RUN pip install --user --no-cache-dir scipy
+RUN pip install --user --no-cache-dir scikit-learn
+RUN pip install --user --no-cache-dir scikit-image
+RUN pip install --user --no-cache-dir xgboost
+RUN pip install --user --no-cache-dir imageio
+RUN pip install --user --no-cache-dir graphviz
+RUN pip install --user --no-cache-dir statsmodels
+RUN pip install --user --no-cache-dir torch torchvision
+RUN pip install --user --no-cache-dir opencv-contrib-python-headless
+RUN pip cache purge
+USER root
+RUN HOME='/' pip cache purge
+
+#---------------------------
+# Change Folder Permissions:
+#---------------------------
+USER root
+RUN chmod 777 /home/mainuser && chmod a+s /home/mainuser
+RUN mkdir -p /code && chmod -R 777 /code
+RUN mkdir -p /data && chmod -R 777 /data
+RUN mkdir -p /output && chmod -R 777 /output
+RUN mkdir -p /apps && chmod -R 777 /apps
+RUN mkdir -p /notebooks && chmod -R 777 /notebooks
+RUN chmod 777 /var/tmp
+
+#------------------
+# Mainuser ENV
+#------------------
+USER mainuser
+ENV HOME='/home/mainuser' 
+ENV ALIASES='/home/mainuser/.bash_aliases'
+ENV PATH=${PATH}:/home/mainuser/.local/bin
+
+#------------------
+# Login as root
+#------------------
+USER mainuser
+WORKDIR /home/mainuser
+CMD ["/bin/bash"]
